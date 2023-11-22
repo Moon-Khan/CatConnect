@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "983242581135",
+    "project_id": "catconnect-d0bc5",
+    "storage_bucket": "catconnect-d0bc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983242581135:android:28e5760ed4d35e00a57cfa",
+        "android_client_info": {
+          "package_name": "com.catconnectfyp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjq2KOvPLrxTm8JX2YuK4Wn_KgO1zV6v0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
