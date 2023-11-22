@@ -1,10 +1,11 @@
-// SignupScreen.js
 
+// SignupScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import RoleSelectionScreen from './RoleSelectionScreen'; // Import the new screen
 
 const SignupScreen = () => {
   const navigation = useNavigation();
@@ -27,6 +28,9 @@ const SignupScreen = () => {
       });
 
       console.log('User account created & signed in!');
+      
+      // Navigate to RoleSelectionScreen after successful signup
+      navigation.navigate('RoleSelection');
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to create an account. Please try again.');
