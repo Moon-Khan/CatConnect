@@ -15,7 +15,7 @@ git config --global user.email "your email"
 ```
 3. Set up the Remote Repository
 ```
-git remote add origin https://github.com/Moon-Khan/CatConnect
+git remote add origin https://github.com/Moon-Khan/CatConnect.git
 ```
 4. Pull or Clone code from the master branch
 ```
