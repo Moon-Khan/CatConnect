@@ -15,11 +15,11 @@ git config --global user.email "your email"
 ```
 3. Set up the Remote Repository
 ```
-git remote add origin https://github.com/Moon-Khan/CatConnect-FYP
+git remote add origin https://github.com/Moon-Khan/CatConnect
 ```
 4. Pull or Clone code from the master branch
 ```
-git pull origin master OR git clone https://github.com/Moon-Khan/CatConnect-FYP
+git pull origin master OR git clone https://github.com/Moon-Khan/CatConnect.git
 ```
 ## Collaboration Workflow
 
