@@ -5,7 +5,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import RoleSelectionScreen from './RoleSelectionScreen'; // Import the new screen
+// import RoleSelectionScreen from ''; // Import the new screen
+// import RoleSelectionScreen from '../../Screens/RoleSelectionScreen'; // Corrected import
 
 const SignupScreen = () => {
   const navigation = useNavigation();

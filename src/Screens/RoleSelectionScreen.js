@@ -8,7 +8,7 @@ const RoleSelectionScreen = () => {
 
   const handleRoleSelection = (role) => {
     // Navigate to HomeScreen based on the selected role
-    navigation.navigate('Home', { role });
+    navigation.navigate('CatBasicInfo', { role });
   };
 
   return (
@@ -18,6 +18,7 @@ const RoleSelectionScreen = () => {
         style={styles.button}
         onPress={() => handleRoleSelection('maleCat')}>
         <Text style={styles.buttonText}>Do you have a male cat?</Text>
+        
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
