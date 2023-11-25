@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateTemperament, updateSocialCompatibility, updateDescription, updateAvailabilityStatus } from '../../Redux/Slices/CatProfile/PhysicalAndHealthSlice';
 
 
-const CatDetailsScreen3 = ({ navigation }) => {
+const PersonalityAvialabilityScreen = ({ navigation }) => {
 
 
-    const temperament = useSelector((state) => state.catProfile.temperament);
-    const socialCompatibility = useSelector((state) => state.catProfile.socialCompatibility);
-    const description = useSelector((state) => state.catProfile.description);
-    const availabilityStatus = useSelector((state) => state.catProfile.availabilityStatus);
+    const temperament = useSelector((state) => state.personalityAvialability.temperament);
+    const socialCompatibility = useSelector((state) => state.personalityAvialability.socialCompatibility);
+    const description = useSelector((state) => state.personalityAvialability.description);
+    const availabilityStatus = useSelector((state) => state.personalityAvialability.availabilityStatus);
 
 
     //redux code
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CatDetailsScreen3;
+export default PersonalityAvialabilityScreen;
 
 
 

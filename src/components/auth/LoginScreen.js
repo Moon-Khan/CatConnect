@@ -1,27 +1,32 @@
-// LoginScreen.js
+// /src/Screens/Auth/LoginScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
+import { setLoading, setError, setUser } from '../../Redux/Slices/Auth/AuthSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState();
 
   const handleLogin = async () => {
     try {
-      await auth().signInWithEmailAndPassword(email, password);
-      console.log('User signed in!');
-      // Navigate to HomeScreen on successful login
-      // navigation.navigate('CatBasicInfo');
-      navigation.navigate('CatBasicInfo')
+      dispatch(setLoading(true));
+      const userCredential = await auth().signInWithEmailAndPassword(email, password);
+
+      dispatch(setUser(userCredential.user.uid));
+      dispatch(setLoading(false));
+      navigation.navigate('CatBasicInfo');
+      console.log('Login successful!');
     } catch (error) {
-      console.error(error);
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
       Alert.alert('Error', 'Invalid email or password. Please try again.');
     }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>

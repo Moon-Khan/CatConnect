@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateCatName, updateBreed, updateGender, updateAge } from '../../Redux/Slices/CatProfile/BasicInfoSlice';
 
 const CatBasicInfoScreen = ({ navigation }) => {
-  const catName = useSelector((state) => state.catProfile.catName);
-  const breed = useSelector((state) => state.catProfile.breed);
-  const gender = useSelector((state) => state.catProfile.gender);
-  const age = useSelector((state) => state.catProfile.age);
+  const catName = useSelector((state) => state.BasicInfo.catName); // Use 'BasicInfo' instead of 'basicInfoSlice'
+  const breed = useSelector((state) => state.BasicInfo.breed);
+  const gender = useSelector((state) => state.BasicInfo.gender);
+  const age = useSelector((state) => state.BasicInfo.age);
 
   //redux code
   const dispatch = useDispatch();

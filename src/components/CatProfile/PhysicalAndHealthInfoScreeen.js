@@ -7,15 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import {updateColor, updatePattern, updateEyeColor, updateCoatLength, updateVaccinationStatus, updateMedicalCertificate} from '../../Redux/Slices/CatProfile/PhysicalAndHealthSlice';
 
 
-const CatProfileScreen = ({ navigation }) => {
+const PhysicalAndHealthScreen = ({ navigation }) => {
 
   
-    const color = useSelector((state) => state.catProfile.color);
-    const pattern = useSelector((state) => state.catProfile.pattern);
-    const eyeColor = useSelector((state) => state.catProfile.eyeColor);
-    const coatLength = useSelector((state) => state.catProfile.coatLength);
-    const vaccinationStatus = useSelector((state) => state.catProfile.vaccinationStatus);
-    const medicalCertificate = useSelector((state) => state.catProfile.medicalCertificate);
+    const color = useSelector((state) => state.physicalHealth.color);
+    const pattern = useSelector((state) => state.physicalHealth.pattern);
+    const eyeColor = useSelector((state) => state.physicalHealth.eyeColor);
+    const coatLength = useSelector((state) => state.physicalHealth.coatLength);
+    const vaccinationStatus = useSelector((state) => state.physicalHealth.vaccinationStatus);
+    const medicalCertificate = useSelector((state) => state.physicalHealth.medicalCertificate);
 
     //redux code
     const dispatch = useDispatch();
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CatProfileScreen;
+export default PhysicalAndHealthScreen;
 
 
 

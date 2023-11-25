@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const basicInfoSlice = createSlice({
-  name: 'catProfile',
+  name: 'BasicInfo',
   initialState,
   reducers: {
     updateCatName: (state, action) => {
@@ -27,5 +27,5 @@ const basicInfoSlice = createSlice({
   },
 });
 
-export const { updateCatName, updateBreed, updateGender, updateAge  } = basicInfoSlice.actions;
+export const { updateCatName, updateBreed, updateGender, updateAge } = basicInfoSlice.actions;
 export default basicInfoSlice.reducer;
