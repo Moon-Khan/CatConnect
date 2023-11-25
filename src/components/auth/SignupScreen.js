@@ -1,39 +1,40 @@
-
-// SignupScreen.js
+// /src/Screens/Auth/SignupScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-// import RoleSelectionScreen from ''; // Import the new screen
-// import RoleSelectionScreen from '../../Screens/RoleSelectionScreen'; // Corrected import
+import { setLoading, setError, setUser } from '../../Redux/Slices/Auth/AuthSlice';
+import { setUserData } from '../../Redux/Slices/Auth/AuthSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignup = async () => {
     try {
-      // Create user with email and password
+      dispatch(setLoading(true));
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-
-      // Get the newly created user's UID
       const uid = userCredential.user.uid;
-
-      // Save additional user data to Firestore
       await firestore().collection('users').doc(uid).set({
         email: email,
         username: username,
       });
 
-      console.log('User account created & signed in!');
-      
-      // Navigate to RoleSelectionScreen after successful signup
+      dispatch(setUser(userCredential.user.uid));
+      // dispatch(setUserData({ email, username }));
+
+      dispatch(setLoading(false));
       navigation.navigate('RoleSelection');
+      console.log('Account created successfully!');
     } catch (error) {
-      console.error(error);
+      dispatch(setError(error.message));
+      dispatch(setLoading(false));
+      console.log(error.message);
       Alert.alert('Error', 'Failed to create an account. Please try again.');
     }
   };
