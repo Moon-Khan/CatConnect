@@ -14,7 +14,8 @@ const LoginScreen = () => {
       await auth().signInWithEmailAndPassword(email, password);
       console.log('User signed in!');
       // Navigate to HomeScreen on successful login
-      navigation.navigate('Home');
+      // navigation.navigate('CatBasicInfo');
+      navigation.navigate('CatBasicInfo')
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Invalid email or password. Please try again.');
