@@ -7,8 +7,23 @@ const RoleSelectionScreen = () => {
   const navigation = useNavigation();
 
   const handleRoleSelection = (role) => {
-    // Navigate to HomeScreen based on the selected role
-    navigation.navigate('CatBasicInfo', { role });
+    // Navigate to different screens based on the selected role
+    switch (role) {
+      case 'maleCat':
+        // Navigate to the screen for male cat information
+        navigation.navigate('CatBasicInfo', { role });
+        break;
+      case 'femaleCat':
+        // Navigate to the screen for female cat information
+        navigation.navigate('CatBasicInfo', { role });
+        break;
+      case 'doctor':
+        // Navigate to the screen for doctor basic information
+        navigation.navigate('DoctorBasicInfoScreen', { role });
+        break;
+      default:
+        break;
+    }
   };
 
   return (
