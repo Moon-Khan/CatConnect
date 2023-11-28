@@ -13,6 +13,9 @@ import CatBasicInfoScreen from './components/CatProfile/CatBasicInfoScreen';
 import PhysicalAndHealthInfo from './components/CatProfile/PhysicalAndHealthInfoScreeen';
 import PersonalityAndAvailabilityInfo from './components/CatProfile/PersonalityAndAvailabilityInfoScreen'
 import CatMediaUploadScreen from './components/CatProfile/MediaUploadScreen';
+import DoctorBasicInfoScreen from './components/DoctorProfile/DoctorBasicInfoScreen';
+import DoctorHome from './components/DoctorProfile/DoctorHome';
+import Pending from './components/DoctorProfile/Pending';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +31,10 @@ const App = () => (
         <Stack.Screen name="PhysicalAndHealthInfo" component={PhysicalAndHealthInfo} />
         <Stack.Screen name="PersonalityAndAvailabilityInfo" component={PersonalityAndAvailabilityInfo} />
         <Stack.Screen name="CatMediaUpload" component={CatMediaUploadScreen} />
+        <Stack.Screen name="DoctorBasicInfo" component={DoctorBasicInfoScreen} />
+        <Stack.Screen name="DoctorHome" component={DoctorHome} />
+        <Stack.Screen name="Pending" component={Pending} />
+
 
       </Stack.Navigator>
     </NavigationContainer>
