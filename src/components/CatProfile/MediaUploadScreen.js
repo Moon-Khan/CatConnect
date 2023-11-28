@@ -3,11 +3,12 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMedia } from '../../Redux/Slices/CatProfile/MediaUploadSlice'; 
+import { addMedia } from '../../Redux/Slices/CatProfile/CatProfileSlice';
+import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
 
 const CatMediaUploadScreen = () => {
     const dispatch = useDispatch();
-    const mediaList = useSelector((state) => state.mediaUpload.mediaList);
+    const mediaList = useSelector((state) => state.catProfile.mediaUpload.mediaList);
 
     const pickImage = () => {
         ImagePicker.showImagePicker({}, (response) => {
@@ -29,8 +30,30 @@ const CatMediaUploadScreen = () => {
         if (item.type === 'image') {
             return <Image source={{ uri: item.uri }} style={styles.mediaItem} />;
         } else if (item.type === 'video') {
+            // Assuming you have a VideoPlayer component to handle video rendering
+            // Make sure to import and use it appropriately
             return <VideoPlayer source={{ uri: item.uri }} style={styles.mediaItem} />;
         }
+    };
+
+    const handleSaveToFirestore = () => {
+        try {
+            dispatch(
+                saveCatProfileToFirestore(
+                    {
+                        mediaUpload: {
+                            mediaList,
+                        },
+                    },
+                    'catProfiles'
+                )
+            );
+
+        } catch (err) {
+            console.log(err);
+        }
+        // Save media upload data to Firestore
+
     };
 
     return (
@@ -52,6 +75,10 @@ const CatMediaUploadScreen = () => {
                     renderItem={renderMediaItem}
                 />
             )}
+
+            <TouchableOpacity style={styles.button} onPress={handleSaveToFirestore}>
+                <Text style={styles.buttonText}>Profile Created</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -77,7 +104,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         flex: 1,
-        marginHorizontal: 8,
+        marginHorizontal: 10,
     },
     buttonText: {
         color: 'white',

@@ -4,51 +4,47 @@ import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 
 import { Button, RadioButton } from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import {updateColor, updatePattern, updateEyeColor, updateCoatLength, updateVaccinationStatus, updateMedicalCertificate} from '../../Redux/Slices/CatProfile/PhysicalAndHealthSlice';
+import { updatePhysicalHealth } from '../../Redux/Slices/CatProfile/CatProfileSlice';
+import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
 
 
 const PhysicalAndHealthScreen = ({ navigation }) => {
 
-  
-    const color = useSelector((state) => state.physicalHealth.color);
-    const pattern = useSelector((state) => state.physicalHealth.pattern);
-    const eyeColor = useSelector((state) => state.physicalHealth.eyeColor);
-    const coatLength = useSelector((state) => state.physicalHealth.coatLength);
-    const vaccinationStatus = useSelector((state) => state.physicalHealth.vaccinationStatus);
-    const medicalCertificate = useSelector((state) => state.physicalHealth.medicalCertificate);
+
+    const color = useSelector((state) => state.catProfile.physicalHealth.color);
+    const pattern = useSelector((state) => state.catProfile.physicalHealth.pattern);
+    const eyeColor = useSelector((state) => state.catProfile.physicalHealth.eyeColor);
+    const coatLength = useSelector((state) => state.catProfile.physicalHealth.coatLength);
+    const vaccinationStatus = useSelector((state) => state.catProfile.physicalHealth.vaccinationStatus);
+    const medicalCertificate = useSelector((state) => state.catProfile.physicalHealth.medicalCertificate);
 
     //redux code
     const dispatch = useDispatch();
 
 
     const handleColorChange = (text) => {
-        dispatch(updateColor(text));
+        dispatch(updatePhysicalHealth({ color: text }));
     };
 
     const handlePatternChange = (text) => {
-        dispatch(updatePattern(text));
+        dispatch(updatePhysicalHealth({ pattern: text }));
     };
 
     const handleEyeColorChange = (text) => {
-        dispatch(updateEyeColor(text));
+        dispatch(updatePhysicalHealth({ eyeColor: text }));
     };
 
     const handleCoatLengthChange = (text) => {
-        dispatch(updateCoatLength(text));
+        dispatch(updatePhysicalHealth({ coatLength: text }));
     };
     const handleVaccinationStatusChange = (text) => {
-        dispatch(updateVaccinationStatus(text));
+        console.log('Selected value:', text);
+        dispatch(updatePhysicalHealth({ vaccinationStatus: text }));
     };
     const handleMedicalCertificateChange = (text) => {
-        dispatch(updateMedicalCertificate(text));
+        console.log('Selected value:', text);
+        dispatch(updatePhysicalHealth({ medicalCertificate: text.uri }));
     };
-
-
-
-    // const handleSave = () => {
-    //     // Handle saving data to your store or API
-    //     console.log('Data saved:', { color, pattern, eyeColor, coatLength, vaccinationStatus, medicalCertificate });
-    // };
 
     const handleAttachment = async () => {
         try {
@@ -69,8 +65,23 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
     };
 
     const handleNextPage = () => {
-        // Navigate to the next page (replace 'NextPage' with the actual name of the next screen)
-        navigation.navigate('PersonalityAndAvailabilityInfo');
+        try {
+            dispatch(saveCatProfileToFirestore({
+                physicalHealth: {
+                    color,
+                    pattern,
+                    eyeColor,
+                    coatLength,
+                    vaccinationStatus,
+                    medicalCertificate,
+                },
+            }, 
+            ));
+            navigation.navigate('PersonalityAndAvailabilityInfo');
+
+
+        } catch (err) { console.log(err); }
+
     };
 
     return (
@@ -121,7 +132,10 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
 
             <View style={styles.inputContainer}>
                 <Text>Vaccination Status</Text>
-                <RadioButton.Group onValueChange={handleVaccinationStatusChange} value={vaccinationStatus}>
+                <RadioButton.Group
+                    onValueChange={(value) => handleVaccinationStatusChange(value)}
+                    value={vaccinationStatus}
+                >
                     <View style={styles.radioButtonContainer}>
                         <RadioButton.Item label="Vaccinated" value="Vaccinated" />
                         <RadioButton.Item label="Not Vaccinated" value="Not Vaccinated" />
@@ -143,7 +157,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                 <Text style={styles.buttonText}>Next Page</Text>
             </TouchableOpacity>
 
-     
+
         </ScrollView>
     );
 };
@@ -211,16 +225,16 @@ export default PhysicalAndHealthScreen;
 
 
 
-  // const [color, setColor] = useState('');
-    // const [pattern, setPattern] = useState('');
-    // const [eyeColor, setEyeColor] = useState('');
-    // const [coatLength, setCoatLength] = useState('');
+// const [color, setColor] = useState('');
+// const [pattern, setPattern] = useState('');
+// const [eyeColor, setEyeColor] = useState('');
+// const [coatLength, setCoatLength] = useState('');
 
-    // const [vaccinationStatus, setVaccinationStatus] = useState('');
-    // const [medicalCertificate, setMedicalCertificate] = useState(null);
+// const [vaccinationStatus, setVaccinationStatus] = useState('');
+// const [medicalCertificate, setMedicalCertificate] = useState(null);
 
 
 
-           {/* <Button mode="contained" style={styles.saveButton} onPress={handleSave}>
+{/* <Button mode="contained" style={styles.saveButton} onPress={handleSave}>
                 Save
             </Button> */}
