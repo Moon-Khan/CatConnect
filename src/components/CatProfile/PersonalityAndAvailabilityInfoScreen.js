@@ -3,41 +3,56 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateTemperament, updateSocialCompatibility, updateDescription, updateAvailabilityStatus } from '../../Redux/Slices/CatProfile/PhysicalAndHealthSlice';
+import { updatePersonalityAndAvailability } from '../../Redux/Slices/CatProfile/CatProfileSlice';
+import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
 
 
 const PersonalityAvialabilityScreen = ({ navigation }) => {
 
 
-    const temperament = useSelector((state) => state.personalityAvialability.temperament);
-    const socialCompatibility = useSelector((state) => state.personalityAvialability.socialCompatibility);
-    const description = useSelector((state) => state.personalityAvialability.description);
-    const availabilityStatus = useSelector((state) => state.personalityAvialability.availabilityStatus);
+    const temperament = useSelector((state) => state.catProfile.personalityAndAvailability.temperament);
+    const socialCompatibility = useSelector((state) => state.catProfile.personalityAndAvailability.socialCompatibility);
+    const description = useSelector((state) => state.catProfile.personalityAndAvailability.description);
+    const availabilityStatus = useSelector((state) => state.catProfile.personalityAndAvailability.availabilityStatus);
 
 
     //redux code
     const dispatch = useDispatch();
 
     const handleTemparamentChange = (text) => {
-        dispatch(updateTemperament(text));
+        dispatch(updatePersonalityAndAvailability({ temperament: text }));
     };
 
     const handleSocialCompatibilityChange = (text) => {
-        dispatch(updateSocialCompatibility(text));
+        dispatch(updatePersonalityAndAvailability({ socialCompatibility: text }));
     };
 
     const handleDescriptionChange = (text) => {
-        dispatch(updateDescription(text));
+        dispatch(updatePersonalityAndAvailability({ description: text }));
     };
 
     const handleAvailabilityStatusChange = (text) => {
-        dispatch(updateAvailabilityStatus(text));
+        dispatch(updatePersonalityAndAvailability({ availabilityStatus: text }));
     };
 
 
     const handleNextPage = () => {
-        // Navigate to the next page
-        navigation.navigate('CatMediaUpload');
+        try {
+            dispatch(saveCatProfileToFirestore({
+                personalityAndAvailability: {
+                    temperament,
+                    socialCompatibility,
+                    description,
+                    availabilityStatus,
+                },
+            },
+            ));
+            navigation.navigate('CatMediaUpload');
+
+        } catch (err) {
+            console.log(err);
+        }
+
     };
 
     return (
@@ -79,7 +94,10 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
 
             <View style={styles.inputContainer}>
                 <Text>Availability Status</Text>
-                <RadioButton.Group onValueChange={handleAvailabilityStatusChange} value={availabilityStatus}>
+                <RadioButton.Group
+                    onValueChange={(value) => handleAvailabilityStatusChange(value)}
+                    value={availabilityStatus}
+                >
                     <View style={styles.radioButtonContainer}>
                         <RadioButton.Item label="Available" value="Available" />
                         <RadioButton.Item label="Not Available" value="Not Available" />
@@ -90,10 +108,9 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.button} onPress={handleNextPage}>
                 <Text style={styles.buttonText}>Next Page</Text>
             </TouchableOpacity>
-
-
         </ScrollView>
     );
+
 };
 
 const styles = StyleSheet.create({

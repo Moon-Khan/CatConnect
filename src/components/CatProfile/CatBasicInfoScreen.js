@@ -2,36 +2,50 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCatName, updateBreed, updateGender, updateAge } from '../../Redux/Slices/CatProfile/BasicInfoSlice';
+import { updateBasicInfo } from '../../Redux/Slices/CatProfile/CatProfileSlice';
+import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
 
 const CatBasicInfoScreen = ({ navigation }) => {
-  const catName = useSelector((state) => state.BasicInfo.catName); // Use 'BasicInfo' instead of 'basicInfoSlice'
-  const breed = useSelector((state) => state.BasicInfo.breed);
-  const gender = useSelector((state) => state.BasicInfo.gender);
-  const age = useSelector((state) => state.BasicInfo.age);
+  const catName = useSelector((state) => state.catProfile.basicInfo.catName);
+  const breed = useSelector((state) => state.catProfile.basicInfo.breed);
+  const gender = useSelector((state) => state.catProfile.basicInfo.gender);
+  const age = useSelector((state) => state.catProfile.basicInfo.age);
 
   //redux code
   const dispatch = useDispatch();
 
   const handleCatNameChange = (text) => {
-    dispatch(updateCatName(text));
+    dispatch(updateBasicInfo({ catName: text }));
   };
 
   const handleBreedChange = (text) => {
-    dispatch(updateBreed(text));
+    dispatch(updateBasicInfo({ breed: text }));
   };
 
   const handleGenderChange = (text) => {
-    dispatch(updateGender(text));
+    dispatch(updateBasicInfo({ gender: text }));
   };
 
   const handleAgeChange = (text) => {
-    dispatch(updateAge(text));
+    dispatch(updateBasicInfo({ age: text }));
   };
 
   const handleNextPage = () => {
-    // Navigate to the next page (replace 'NextPage' with the actual name of the next screen)
-    navigation.navigate('PhysicalAndHealthInfo');
+    // Ensure that basicInfo and catName are defined
+    if (catName !== undefined) {
+      dispatch(saveCatProfileToFirestore({
+        basicInfo: {
+          catName,
+          breed,
+          gender,
+          age,
+        },
+      }, 'catProfiles'
+      ));
+      navigation.navigate('PhysicalAndHealthInfo');
+    } else {
+      console.error('Invalid catProfileData. Ensure basicInfo and catName are defined.');
+    }
   };
 
   return (
