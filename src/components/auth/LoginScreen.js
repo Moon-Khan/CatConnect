@@ -19,7 +19,7 @@ const LoginScreen = () => {
 
       dispatch(setUser(userCredential.user.uid));
       dispatch(setLoading(false));
-      navigation.navigate('CatBasicInfo');
+      navigation.navigate('Home');
       console.log('Login successful!');
     } catch (error) {
       dispatch(setError(error.message));
@@ -27,6 +27,8 @@ const LoginScreen = () => {
       Alert.alert('Error', 'Invalid email or password. Please try again.');
     }
   };
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>

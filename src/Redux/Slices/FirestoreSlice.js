@@ -1,4 +1,3 @@
-// FirestoreSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import FirebaseService from '../../Services/firebase';
 

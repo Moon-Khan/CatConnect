@@ -1,4 +1,4 @@
-// PersonalityAndAvailabilityInfoScreen.js
+// ./src/CatProfile/PersonalityAndAvailabilityInfoScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
@@ -154,19 +154,3 @@ const styles = StyleSheet.create({
 });
 
 export default PersonalityAvialabilityScreen;
-
-
-
-// const [temperament, setTemperament] = useState('');
-// const [socialCompatibility, setSocialCompatibility] = useState('');
-// const [description, setDescription] = useState('');
-// const [availabilityStatus, setAvailabilityStatus] = useState('');
-
-// const handleSave = () => {
-//     // Handle saving data to your store or API
-//     console.log('Data saved:', { temperament, socialCompatibility, description, availabilityStatus });
-// };
-
-{/* <Button mode="contained" style={styles.saveButton} onPress={handleSave}>
-                Save
-            </Button> */}

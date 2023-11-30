@@ -1,4 +1,4 @@
-// CatBasicInfoScreen.js
+// ./src/CatProfile/CatBasicInfoScreen.js
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -97,7 +97,7 @@ const CatBasicInfoScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -134,3 +134,4 @@ const styles = StyleSheet.create({
 });
 
 export default CatBasicInfoScreen;
+

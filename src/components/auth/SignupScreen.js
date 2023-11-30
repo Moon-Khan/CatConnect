@@ -9,6 +9,7 @@ import { setUserData } from '../../Redux/Slices/Auth/AuthSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -25,11 +26,13 @@ const SignupScreen = () => {
         username: username,
       });
 
-      dispatch(setUser(userCredential.user.uid));
+      dispatch(setUser(uid));
       // dispatch(setUserData({ email, username }));
 
+
       dispatch(setLoading(false));
-      navigation.navigate('RoleSelection');
+      // navigation.navigate('RoleSelection');
+      navigation.navigate('RoleSelection' );
       console.log('Account created successfully!');
     } catch (error) {
       dispatch(setError(error.message));

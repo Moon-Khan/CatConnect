@@ -1,28 +1,36 @@
 // RoleSelectionScreen.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { updateBasicInfo } from '../Redux/Slices/CatProfile/CatProfileSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const RoleSelectionScreen = () => {
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
 
-  const handleRoleSelection = (role) => {
-    // Navigate to HomeScreen based on the selected role
-    navigation.navigate('CatBasicInfo', { role });
+  const handleGenderSelection = (selectedGender) => {
+    // Dispatch an action to update catGender in the Redux store
+    dispatch(updateBasicInfo({ gender: selectedGender }));
+
+    // Navigate to CatBasicInfoScreen after selecting the gender
+    navigation.navigate('CatBasicInfo' );
   };
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select Your Role</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRoleSelection('maleCat')}>
+        onPress={() => handleGenderSelection('male')}>
         <Text style={styles.buttonText}>Do you have a male cat?</Text>
-        
+
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRoleSelection('femaleCat')}>
+        onPress={() => handleGenderSelection('female')}>
         <Text style={styles.buttonText}>Do you have a female cat?</Text>
       </TouchableOpacity>
       <TouchableOpacity

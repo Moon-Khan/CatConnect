@@ -1,4 +1,4 @@
-// CatProfileSlice.js
+// ./src/Redux/CatProfileSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -43,6 +43,7 @@ const catProfileSlice = createSlice({
                 ...action.payload,
             };
         },
+        
         addMedia: (state, action) => {
             state.mediaUpload.mediaList.push(action.payload);
         },

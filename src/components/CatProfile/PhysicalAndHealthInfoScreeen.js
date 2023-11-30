@@ -1,4 +1,4 @@
-// PhysicalAndHealthInfoScreen.js
+// ./src/CatProfile/PhysicalAndHealthInfoScreen.js
 import React from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
@@ -75,7 +75,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                     vaccinationStatus,
                     medicalCertificate,
                 },
-            }, 
+            },
             ));
             navigation.navigate('PersonalityAndAvailabilityInfo');
 
@@ -83,7 +83,6 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
         } catch (err) { console.log(err); }
 
     };
-
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Cat Information</Text>
@@ -222,19 +221,3 @@ const styles = StyleSheet.create({
 
 export default PhysicalAndHealthScreen;
 
-
-
-
-// const [color, setColor] = useState('');
-// const [pattern, setPattern] = useState('');
-// const [eyeColor, setEyeColor] = useState('');
-// const [coatLength, setCoatLength] = useState('');
-
-// const [vaccinationStatus, setVaccinationStatus] = useState('');
-// const [medicalCertificate, setMedicalCertificate] = useState(null);
-
-
-
-{/* <Button mode="contained" style={styles.saveButton} onPress={handleSave}>
-                Save
-            </Button> */}

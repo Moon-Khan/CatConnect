@@ -1,4 +1,4 @@
-// CatMediaUploadScreen.js
+// ./src/CatProfile/CatMediaUploadScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
