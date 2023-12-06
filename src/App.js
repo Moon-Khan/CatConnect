@@ -13,14 +13,21 @@ import CatBasicInfoScreen from './components/CatProfile/CatBasicInfoScreen';
 import PhysicalAndHealthInfo from './components/CatProfile/PhysicalAndHealthInfoScreeen';
 import PersonalityAndAvailabilityInfo from './components/CatProfile/PersonalityAndAvailabilityInfoScreen'
 import CatMediaUploadScreen from './components/CatProfile/MediaUploadScreen';
+import DoctorBasicInfoScreen from './components/DoctorProfile/DoctorBasicInfoScreen';
+import DoctorHome from './components/DoctorProfile/DoctorHome';
+import Pending from './components/DoctorProfile/Pending';
+import Splashscreen from './Screens/Splash';
+import doctorSignup from './components/DoctorProfile/DoctorInfo';
 
 const Stack = createStackNavigator();
 
 const App = () => (
   <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signup">
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="doctorSignup">
+        <Stack.Screen name="Splashscreen" component={Splashscreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="doctorSignup" component={doctorSignup} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="RoleSelection" component={RoleSelectionScreen} />
@@ -28,6 +35,10 @@ const App = () => (
         <Stack.Screen name="PhysicalAndHealthInfo" component={PhysicalAndHealthInfo} />
         <Stack.Screen name="PersonalityAndAvailabilityInfo" component={PersonalityAndAvailabilityInfo} />
         <Stack.Screen name="CatMediaUpload" component={CatMediaUploadScreen} />
+        <Stack.Screen name="DoctorBasicInfo" component={DoctorBasicInfoScreen} />
+        <Stack.Screen name="DoctorHome" component={DoctorHome} />
+        <Stack.Screen name="Pending" component={Pending} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

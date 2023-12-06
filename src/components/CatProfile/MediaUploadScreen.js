@@ -1,88 +1,92 @@
 // ./src/CatProfile/CatMediaUploadScreen.js
-import React from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMedia } from '../../Redux/Slices/CatProfile/CatProfileSlice';
 import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
 
 const CatMediaUploadScreen = () => {
+    const [image, setImage] = useState([]);
     const dispatch = useDispatch();
     const mediaList = useSelector((state) => state.catProfile.mediaUpload.mediaList);
 
-    const pickImage = () => {
-        ImagePicker.showImagePicker({}, (response) => {
-            if (!response.didCancel && !response.error) {
-                dispatch(addMedia({ type: 'image', uri: response.uri }));
-            }
+    const photoCamera = () => {
+        ImageCropPicker.openCamera({
+            width: 300,
+            height: 400,
+            cropping: true,
+        }).then((pickedImage) => {
+            console.log(pickedImage);
+            setImage([pickedImage.path]); // Use an array to store a single image path
         });
     };
 
-    const pickVideo = () => {
-        ImagePicker.showImagePicker({ mediaType: 'video' }, (response) => {
-            if (!response.didCancel && !response.error) {
-                dispatch(addMedia({ type: 'video', uri: response.uri }));
-            }
+    const photoLib = () => {
+        ImageCropPicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+        }).then((pickedImage) => {
+            console.log(pickedImage.path);
+            setImage([pickedImage.path]); // Use an array to store a single image path
         });
-    };
-
-    const renderMediaItem = ({ item }) => {
-        if (item.type === 'image') {
-            return <Image source={{ uri: item.uri }} style={styles.mediaItem} />;
-        } else if (item.type === 'video') {
-            // Assuming you have a VideoPlayer component to handle video rendering
-            // Make sure to import and use it appropriately
-            return <VideoPlayer source={{ uri: item.uri }} style={styles.mediaItem} />;
-        }
     };
 
     const handleSaveToFirestore = () => {
         try {
-            dispatch(
-                saveCatProfileToFirestore(
-                    {
-                        mediaUpload: {
-                            mediaList,
-                        },
-                    },
-                    'catProfiles'
-                )
-            );
+            if (image.length > 0) {
+                // Dispatch the 'addMedia' action with the selected image URI
+                dispatch(addMedia({ uri: image[0] }));
 
+                // Save media upload data to Firestore with only one image
+                dispatch(
+                    saveCatProfileToFirestore(
+                        {
+                            mediaUpload: {
+                                mediaList: [{ uri: image[0] }],
+                            },
+                        },
+                        'catProfiles'
+                    )
+                );
+            }
         } catch (err) {
             console.log(err);
         }
-        // Save media upload data to Firestore
-
     };
 
     return (
-        <View style={styles.container}>
+        <View style={{ ...styles.container, backgroundColor: 'white' }}>
             <Text style={styles.title}>Cat Media Upload</Text>
+
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={pickImage}>
-                    <Text style={styles.buttonText}>Upload Photo</Text>
+                <TouchableOpacity style={styles.button} onPress={photoCamera}>
+                    <Text style={styles.buttonText}>Upload Photo from camera</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={pickVideo}>
-                    <Text style={styles.buttonText}>Upload Video</Text>
+                <TouchableOpacity style={styles.button} onPress={photoLib}>
+                    <Text style={styles.buttonText}>Upload Photo from drive</Text>
                 </TouchableOpacity>
             </View>
 
-            {mediaList.length > 0 && (
-                <FlatList
-                    data={mediaList}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderMediaItem}
-                />
-            )}
+            <View style={{ height: 350, width: '100%' }}>
+                {image.length > 0 && (
+                    <Image
+                        style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+                        source={{ uri: image[0] }}
+                        onLoad={() => console.log('Image loaded successfully')}
+                        onError={(error) => console.log('Image load error:', error)}
+                    />
+                )}
+            </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleSaveToFirestore}>
+            <TouchableOpacity style={styles.profileButton} onPress={handleSaveToFirestore}>
                 <Text style={styles.buttonText}>Profile Created</Text>
             </TouchableOpacity>
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     container: {
@@ -90,9 +94,11 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     title: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 24,
         marginBottom: 16,
+        textAlign: 'left',
+        color: '#212529',
+        fontFamily: 'Poppins-SemiBold',
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     button: {
-        backgroundColor: 'blue',
+        backgroundColor: '#47C1FF',
         padding: 10,
         borderRadius: 5,
         flex: 1,
@@ -110,11 +116,19 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
     },
-    mediaItem: {
+    image: {
         width: '100%',
-        height: 200,
-        marginBottom: 16,
+        height: '100%',
+        resizeMode: 'cover',
+    },
+    profileButton: {
+        backgroundColor: '#47C1FF',
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 20,
     },
 });
 
 export default CatMediaUploadScreen;
+

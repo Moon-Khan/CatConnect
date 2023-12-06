@@ -5,6 +5,8 @@ import auth from '@react-native-firebase/auth';
 class FirebaseService {
   static async addCatProfile(catProfileData, collection) {
     try {
+
+
       // Make sure catProfileData is an object
       if (typeof catProfileData === 'object' && catProfileData !== null) {
 
@@ -19,6 +21,9 @@ class FirebaseService {
       console.error('Error adding cat profile to Firestore', error);
     }
   }
+
+
+  
 }
 
 export default FirebaseService;

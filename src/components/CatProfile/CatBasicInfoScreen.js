@@ -1,7 +1,8 @@
 // ./src/CatProfile/CatBasicInfoScreen.js
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, RadioButton } from 'react-native-paper';
 import { updateBasicInfo } from '../../Redux/Slices/CatProfile/CatProfileSlice';
 import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
 
@@ -49,11 +50,14 @@ const CatBasicInfoScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.title}>Cat Information</Text>
 
       <View style={styles.inputContainer}>
-        <Text>Cat's Name</Text>
+        <Text style={fontFamily = 'Poppins-Regular'}>Cat's Name</Text>
         <TextInput
           style={styles.input}
           placeholder="Cat Name"
@@ -63,7 +67,7 @@ const CatBasicInfoScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text>Breed</Text>
+        <Text fontFamily='Poppins-Regular'>Breed</Text>
         <TextInput
           style={styles.input}
           placeholder="Breed"
@@ -73,17 +77,31 @@ const CatBasicInfoScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text>Gender</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Gender"
-          value={gender}
-          onChangeText={handleGenderChange}
-        />
+        <Text fontFamily='Poppins-Regular'>Gender</Text>
+        <View style={styles.radioButtonContainer}>
+          <RadioButton
+            value="Male"
+            status={gender === 'Male' ? 'checked' : 'unchecked'}
+            onPress={() => handleGenderChange('Male')}
+            color="#47C1FF" // Set color for checked sta
+
+          />
+
+          <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Male</Text>
+          <RadioButton
+            value="Female"
+            status={gender === 'Female' ? 'checked' : 'unchecked'}
+            onPress={() => handleGenderChange('Female')}
+            color="#47C1FF" // Set color for checked sta
+
+
+          />
+          <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Female</Text>
+        </View>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text>Age</Text>
+        <Text fontFamily='Poppins-Regular'>Age</Text>
         <TextInput
           style={styles.input}
           placeholder="Age"
@@ -95,41 +113,58 @@ const CatBasicInfoScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleNextPage}>
         <Text style={styles.buttonText}>Next Page</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 16,
     justifyContent: 'center',
   },
   title: {
     fontSize: 24,
-    marginBottom: 16,
-    textAlign: 'center',
+    marginBottom: 20,
+    textAlign: 'left',
+    color: '#212529',
+    fontFamily: 'Poppins-SemiBold',
   },
   inputContainer: {
     marginBottom: 16,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: '#212529',
+    borderRadius: 12,
     borderWidth: 1,
     marginTop: 8,
     padding: 8,
+    fontFamily: 'Poppins-Regular',
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 16,
+    backgroundColor: '#47C1FF',
+    padding: 15,
+    borderRadius: 15,
+    marginTop: 30,
     alignItems: 'center',
+    width: '70%',
+    alignSelf: 'center',
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
+  },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+  },
+  radioButtonText: {
+    marginLeft: 8,
+    marginRight:15,
+
+
   },
 });
 
