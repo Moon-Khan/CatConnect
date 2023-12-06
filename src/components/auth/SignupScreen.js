@@ -5,10 +5,10 @@ import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { setLoading, setError, setUser } from '../../Redux/Slices/Auth/AuthSlice';
-import { setUserData } from '../../Redux/Slices/Auth/AuthSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -25,11 +25,13 @@ const SignupScreen = () => {
         username: username,
       });
 
-      dispatch(setUser(userCredential.user.uid));
+      dispatch(setUser(uid));
       // dispatch(setUserData({ email, username }));
 
+
       dispatch(setLoading(false));
-      navigation.navigate('RoleSelection');
+      // navigation.navigate('RoleSelection');
+      navigation.navigate('CatBasicInfo');
       console.log('Account created successfully!');
     } catch (error) {
       dispatch(setError(error.message));
@@ -43,18 +45,18 @@ const SignupScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Signup</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.underline]}
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
         keyboardType="email-address"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.underline]}
         placeholder="Username"
         onChangeText={(text) => setUsername(text)}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.underline]}
         placeholder="Password"
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
@@ -77,38 +79,59 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "#ffff",
+    padding: 16,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 16,
+    fontSize: 34, 
+    marginBottom: 20, 
+    fontFamily:'Poppins-SemiBold',
+    color: '#47C1FF',
   },
   input: {
-    width: '80%',
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
     marginBottom: 16,
-    padding: 8,
+    paddingHorizontal: 8,
+    alignSelf: 'stretch',
+    color: '#000',
+    fontFamily: 'Poppins-SemiBold',
+
+  },
+  underline: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#47C1FF',
+    width: '80%',
+    alignSelf: 'center',
+    minHeight: 1,
+    marginTop: 6,
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#47C1FF',
+    padding: 12,
+    borderRadius: 25,
+    marginTop: 15,
+    width: '50%',
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    fontSize: 18,
+    color: '#ffff',
+    textAlign: 'center',
+    fontFamily:'Poppins-Medium',
+
   },
   loginContainer: {
     flexDirection: 'row',
     marginTop: 20,
   },
   loginText: {
-    marginRight: 10,
+    color: '#000',
+    marginRight: 5,
   },
   loginLink: {
-    color: 'blue',
+    color: '#47C1FF',
+    fontWeight: 'bold',
   },
 });
+
 
 export default SignupScreen;

@@ -1,4 +1,4 @@
-// PhysicalAndHealthInfoScreen.js
+// ./src/CatProfile/PhysicalAndHealthInfoScreen.js
 import React from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
@@ -75,7 +75,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                     vaccinationStatus,
                     medicalCertificate,
                 },
-            }, 
+            },
             ));
             navigation.navigate('PersonalityAndAvailabilityInfo');
 
@@ -83,13 +83,12 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
         } catch (err) { console.log(err); }
 
     };
-
     return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.title}>Cat Information</Text>
+        <ScrollView style={{ ...styles.container, backgroundColor: 'white' }}>
+            <Text style={styles.title}>Physical Information</Text>
 
             <View style={styles.inputContainer}>
-                <Text>Cat Color</Text>
+                <Text fontFamily='Poppins-Regular'>Cat Color</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Cat Color"
@@ -99,7 +98,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.inputContainer}>
-                <Text>Cat Pattern</Text>
+                <Text fontFamily='Poppins-Regular'>Cat Pattern</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Cat Pattern"
@@ -109,7 +108,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.inputContainer}>
-                <Text>Eye Color</Text>
+                <Text fontFamily='Poppins-Regular'>Eye Color</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Eye Color"
@@ -119,7 +118,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.inputContainer}>
-                <Text>Coat Length</Text>
+                <Text fontFamily='Poppins-Regular'>Coat Length</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Coat Length"
@@ -128,30 +127,45 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                 />
             </View>
 
-            <Text style={styles.sectionTitle}>Health and Medical Information</Text>
+            <Text style={styles.sectionTitle}>Medical Information</Text>
 
             <View style={styles.inputContainer}>
-                <Text>Vaccination Status</Text>
+                <Text fontFamily='Poppins-Regular'>Vaccination Status</Text>
                 <RadioButton.Group
                     onValueChange={(value) => handleVaccinationStatusChange(value)}
                     value={vaccinationStatus}
+
                 >
                     <View style={styles.radioButtonContainer}>
-                        <RadioButton.Item label="Vaccinated" value="Vaccinated" />
-                        <RadioButton.Item label="Not Vaccinated" value="Not Vaccinated" />
+                        <RadioButton.Item
+                            label="Vaccinated"
+                            value="Vaccinated"
+                            color="#47C1FF"
+                        />
+                        <RadioButton.Item
+                            label="Not Vaccinated"
+                            value="Not Vaccinated"
+                            color="#47C1FF"
+                        />
                     </View>
                 </RadioButton.Group>
             </View>
 
-            <View style={styles.inputContainer}>
-                <Text>Medical Certificate</Text>
-                <TouchableOpacity style={styles.attachmentButton} value={medicalCertificate} onPress={handleAttachment}>
-                    <Text>{medicalCertificate ? 'Change Attachment' : 'Attach PDF'}</Text>
+            {/* <View style={styles.inputContainer}>
+                <Text fontFamily='Poppins-Regular'>Medical Certificate</Text>
+                <TouchableOpacity
+                    style={{ ...styles.attachmentButton, backgroundColor: '#212529', width: '80%', alignSelf: 'center' }}
+                    value={medicalCertificate}
+                    onPress={handleAttachment}
+                >
+
+                    <Text style={{ color: 'white' }}>{medicalCertificate ? 'Change Attachment' : 'Attach PDF'}</Text>
                 </TouchableOpacity>
                 {medicalCertificate && (
                     <Text style={styles.attachmentText}>{medicalCertificate.name}</Text>
                 )}
-            </View>
+            </View> */}
+
 
             <TouchableOpacity style={styles.button} onPress={handleNextPage}>
                 <Text style={styles.buttonText}>Next Page</Text>
@@ -168,25 +182,31 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     sectionTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 16,
-        marginBottom: 8,
+        fontSize: 24,
+        marginBottom: 16,
+        textAlign: 'left',
+        color: '#212529',
+        fontFamily: 'Poppins-SemiBold',
     },
     title: {
         fontSize: 24,
         marginBottom: 16,
-        textAlign: 'center',
+        textAlign: 'left',
+        color: '#212529',
+        fontFamily: 'Poppins-SemiBold',
     },
     inputContainer: {
-        marginBottom: 16,
+        marginBottom: 10,
     },
     input: {
         height: 40,
-        borderColor: 'gray',
+        borderColor: '#212529',
         borderWidth: 1,
+        borderRadius: 12,
         marginTop: 8,
         padding: 8,
+        fontFamily: 'Poppins-Regular',
+
     },
     radioButtonContainer: {
         flexDirection: 'row',
@@ -202,14 +222,15 @@ const styles = StyleSheet.create({
     },
     attachmentText: {
         marginTop: 8,
-        color: 'blue',
+        color: 'white',
     },
     button: {
-        backgroundColor: 'blue',
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 16,
+        backgroundColor: '#47C1FF',
+        padding: 15,
+        borderRadius: 15,
         alignItems: 'center',
+        width: '70%',
+        alignSelf: 'center',
     },
     buttonText: {
         color: 'white',
@@ -222,19 +243,3 @@ const styles = StyleSheet.create({
 
 export default PhysicalAndHealthScreen;
 
-
-
-
-// const [color, setColor] = useState('');
-// const [pattern, setPattern] = useState('');
-// const [eyeColor, setEyeColor] = useState('');
-// const [coatLength, setCoatLength] = useState('');
-
-// const [vaccinationStatus, setVaccinationStatus] = useState('');
-// const [medicalCertificate, setMedicalCertificate] = useState(null);
-
-
-
-{/* <Button mode="contained" style={styles.saveButton} onPress={handleSave}>
-                Save
-            </Button> */}

@@ -1,5 +1,5 @@
 
-// redux/reducers/rootReducer.js
+// .src/redux/reducers/rootReducer.js
 import { combineReducers } from 'redux';
 
 import authReducer from '../Slices/Auth/AuthSlice';

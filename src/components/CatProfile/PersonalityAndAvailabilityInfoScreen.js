@@ -1,4 +1,4 @@
-// PersonalityAndAvailabilityInfoScreen.js
+// ./src/CatProfile/PersonalityAndAvailabilityInfoScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
@@ -56,7 +56,7 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={{ ...styles.container, backgroundColor: 'white' }}>
             <Text style={styles.title}>Personality and Behavior</Text>
 
             <View style={styles.inputContainer}>
@@ -97,10 +97,11 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
                 <RadioButton.Group
                     onValueChange={(value) => handleAvailabilityStatusChange(value)}
                     value={availabilityStatus}
+
                 >
                     <View style={styles.radioButtonContainer}>
-                        <RadioButton.Item label="Available" value="Available" />
-                        <RadioButton.Item label="Not Available" value="Not Available" />
+                        <RadioButton.Item label="Available" value="Available" color="#47C1FF" />
+                        <RadioButton.Item label="Not Available" value="Not Available" color="#47C1FF" />
                     </View>
                 </RadioButton.Group>
             </View>
@@ -118,19 +119,23 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
     },
+
     title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 16,
-        marginBottom: 8,
-    },
-    inputContainer: {
+        fontSize: 24,
         marginBottom: 16,
+        textAlign: 'left',
+        color: '#212529',
+        fontFamily: 'Poppins-SemiBold',
+    },
+
+    inputContainer: {
+        marginBottom: 10,
     },
     input: {
         height: 40,
-        borderColor: 'gray',
+        borderColor: '#212529',
         borderWidth: 1,
+        borderRadius: 12,
         marginTop: 8,
         padding: 8,
     },
@@ -138,11 +143,12 @@ const styles = StyleSheet.create({
         height: 80, // Adjust the height for a multiline description input
     },
     button: {
-        backgroundColor: 'blue',
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 16,
+        backgroundColor: '#47C1FF',
+        padding: 15,
+        borderRadius: 15,
         alignItems: 'center',
+        width: '70%',
+        alignSelf: 'center',
     },
     buttonText: {
         color: 'white',
@@ -154,19 +160,3 @@ const styles = StyleSheet.create({
 });
 
 export default PersonalityAvialabilityScreen;
-
-
-
-// const [temperament, setTemperament] = useState('');
-// const [socialCompatibility, setSocialCompatibility] = useState('');
-// const [description, setDescription] = useState('');
-// const [availabilityStatus, setAvailabilityStatus] = useState('');
-
-// const handleSave = () => {
-//     // Handle saving data to your store or API
-//     console.log('Data saved:', { temperament, socialCompatibility, description, availabilityStatus });
-// };
-
-{/* <Button mode="contained" style={styles.saveButton} onPress={handleSave}>
-                Save
-            </Button> */}

@@ -1,4 +1,3 @@
-// FirestoreSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import FirebaseService from '../../Services/firebase';
 
@@ -10,6 +9,10 @@ const firestoreSlice = createSlice({
   name: 'firestore',
   initialState,
   reducers: {
+
+
+    
+
     saveCatProfileToFirestore: (state, action) => {
       const catProfileData = action.payload;
 
