@@ -246,6 +246,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
+
 
 const AppointmentCard = ({ appointment, onAccept, onReject }) => (
   <View style={styles.appointmentCard}>
@@ -289,10 +291,76 @@ const DoctorAppointmentsList = ({ route }) => {
   }, [doctorId]);
 
   const handleAccept = async (appointmentId) => {
+    try {
+      // Update appointment status in Firestore
+      await firestore().collection('Appointments').doc(appointmentId).update({
+        status: 'Accepted',
+      });
+
+      // Fetch user's FCM token from Firestore
+      const appointmentSnapshot = await firestore().collection('Appointments').doc(appointmentId).get();
+      const userId = appointmentSnapshot.data().userId;
+
+      const userSnapshot = await firestore().collection('users').doc(userId).get();
+      const userToken = userSnapshot.data().fcmToken;
+
+      // Notify the user about the appointment status change
+      await firestore().collection('Notifications').add({
+        userId: userId,
+        message: 'Your appointment has been accepted.',
+        status: 'unread',
+      });
+
+      // Send a push notification to the user
+      await sendPushNotification(userToken, 'Appointment Accepted', 'Your appointment has been accepted.');
+    } catch (error) {
+      console.error('Error accepting appointment:', error);
+    }
   };
 
   const handleReject = async (appointmentId) => {
+    try {
+      // Update appointment status in Firestore
+      await firestore().collection('Appointments').doc(appointmentId).update({
+        status: 'Rejected',
+      });
+
+      // Fetch user's FCM token from Firestore
+      const appointmentSnapshot = await firestore().collection('Appointments').doc(appointmentId).get();
+      const userId = appointmentSnapshot.data().userId;
+
+      const userSnapshot = await firestore().collection('users').doc(userId).get();
+      const userToken = userSnapshot.data().fcmToken;
+
+      // Notify the user about the appointment status change
+      await firestore().collection('Notifications').add({
+        userId: userId,
+        message: 'Your appointment has been rejected.',
+        status: 'unread',
+      });
+
+      // Send a push notification to the user
+      await sendPushNotification(userToken, 'Appointment Rejected', 'Your appointment has been rejected.');
+    } catch (error) {
+      console.error('Error rejecting appointment:', error);
+    }
   };
+
+
+  const sendPushNotification = async (userToken, title, message) => {
+    try {
+      await messaging().sendMessage({
+        data: {
+          title,
+          body: message,
+        },
+        token: userToken,
+      });
+    } catch (error) {
+      console.error('Error sending push notification:', error);
+    }
+  };
+
 
   return (
     <View style={styles.container}>

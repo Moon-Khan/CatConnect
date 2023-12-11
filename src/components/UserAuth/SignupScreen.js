@@ -6,6 +6,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { setLoading, setError, setUser } from '../../Redux/Slices/Auth/AuthSlice';
 import { useNavigation } from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
 
 const SignupScreen = () => {
 
@@ -15,14 +16,19 @@ const SignupScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+
   const handleSignup = async () => {
     try {
       dispatch(setLoading(true));
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
       const uid = userCredential.user.uid;
+      const fcmToken = await messaging().getToken();
+
       await firestore().collection('users').doc(uid).set({
         email: email,
         username: username,
+        fcmToken: fcmToken,
+
       });
 
       dispatch(setUser(uid));
