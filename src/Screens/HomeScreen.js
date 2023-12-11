@@ -166,15 +166,21 @@
 // };
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import CatScreen from './CatScreen'; // Import your CatScreen component
+import CatScreen from './CatDetailScreen';
 import HomeIcon from 'react-native-vector-icons/Feather';
 import DoctorIcon from 'react-native-vector-icons/FontAwesome';
 import ChatIcon from 'react-native-vector-icons/Ionicons';
 import ProfileIcon from 'react-native-vector-icons/Feather';
-import NotificationIcon from 'react-native-vector-icons/MaterialIcons';
 import SearchIcon from 'react-native-vector-icons/MaterialIcons';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -184,13 +190,12 @@ const Stack = createStackNavigator();
 const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [catProfiles, setCatProfiles] = useState([]);
-  const [userData, setUserData] = useState({}); // Initialize with an empty object
-  // const { width, height } = Dimensions.get('window');
+  const [userData, setUserData] = useState({});
+  const [filteredCatProfiles, setFilteredCatProfiles] = useState([]);
 
   const user = auth().currentUser;
 
   useEffect(() => {
-
     const fetchUserData = async () => {
       try {
         const userDoc = await firestore().collection('users').doc(user.uid).get();
@@ -210,14 +215,9 @@ const HomeScreen = ({ navigation }) => {
   }, [user]);
 
   useEffect(() => {
-
-
     const fetchAllCatProfiles = async () => {
       try {
-
-        const usersSnapshot = await firestore()
-          .collection('users')
-          .get();
+        const usersSnapshot = await firestore().collection('users').get();
         const promises = [];
 
         usersSnapshot.forEach((userDoc) => {
@@ -227,12 +227,13 @@ const HomeScreen = ({ navigation }) => {
 
         const catProfilesSnapshots = await Promise.all(promises);
 
-        const allCatProfilesData = catProfilesSnapshots.map((catProfileSnapshot) => {
-          return catProfileSnapshot.docs.map((catProfileDoc) => catProfileDoc.data());
-        }).flat();
+        const allCatProfilesData = catProfilesSnapshots
+          .map((catProfileSnapshot) => {
+            return catProfileSnapshot.docs.map((catProfileDoc) => catProfileDoc.data());
+          })
+          .flat();
 
         setCatProfiles(allCatProfilesData);
-
       } catch (error) {
         console.error('Error fetching all cat profiles:', error);
       }
@@ -241,9 +242,15 @@ const HomeScreen = ({ navigation }) => {
     fetchAllCatProfiles();
   }, []);
 
-
   const handleSearch = (text) => {
     setSearchText(text);
+
+    const filteredProfiles = catProfiles.filter((catProfile) => {
+      const catName = catProfile['1'].basicInfo.catName.toLowerCase();
+      return catName.includes(text.toLowerCase());
+    });
+
+    setFilteredCatProfiles(filteredProfiles);
   };
 
   const handleCatProfilePress = (catProfile) => {
@@ -253,7 +260,6 @@ const HomeScreen = ({ navigation }) => {
   const renderRecommendedItems = () => {
     const recommendedItems = ['New'];
     const recommendedItems2 = ['Recommended', 'Persian', 'Colico', 'Himalayan', 'Black Contrast'];
-
 
     return (
       <ScrollView
@@ -276,7 +282,6 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const renderPetCard = (catProfile) => {
-
     if (!catProfile || !catProfile['1'] || !catProfile['4']) {
       return (
         <View style={styles.petCard}>
@@ -289,8 +294,11 @@ const HomeScreen = ({ navigation }) => {
     const personalityAndAvailability = catProfile['3'].personalityAndAvailability || {};
 
     return (
-      <TouchableOpacity key={basicInfo.catName} style={styles.petCard} onPress={() => handleCatProfilePress(catProfile)}>
-
+      <TouchableOpacity
+        key={basicInfo.catName}
+        style={styles.petCard}
+        onPress={() => handleCatProfilePress(catProfile)}
+      >
         <View style={styles.imageContainer}>
           {catProfile['4'].mediaUpload.mediaList && catProfile['4'].mediaUpload.mediaList.length > 0 ? (
             <Image
@@ -310,23 +318,18 @@ const HomeScreen = ({ navigation }) => {
             resizeMode="cover"
             source={require("../../assets/Catassets/hearts.png")}
           />
-
         </View>
       </TouchableOpacity>
-
     );
   };
 
   return (
     <View style={styles.container}>
-      {/* <NotificationIcon name="notifications-none" size={33}
-        import availabilityStatusstyle={{ position: 'absolute', top: '1%', right: '1%' }} /> */}
       <Image
         style={styles.NotificationIcon}
         resizeMode="cover"
         source={require("../../assets/Catassets/notification.png")}
       />
-
       <View style={styles.header1}>
         <Text style={styles.greeting}>Hello {userData.username || ''} </Text>
         <Image
@@ -335,16 +338,12 @@ const HomeScreen = ({ navigation }) => {
           source={require("../../assets/Catassets/hand.png")}
         />
       </View>
-
       <View style={styles.header}>
         <Text style={styles.greeting}>Select Best Breed For Your Cat </Text>
       </View>
-
-
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
           <SearchIcon name="search" size={25} style={{ marginLeft: 10 }} color="#9F9F9F" />
-
           <TextInput
             placeholder="Search..."
             placeholderTextColor="#9F9F9F"
@@ -357,36 +356,27 @@ const HomeScreen = ({ navigation }) => {
             resizeMode="cover"
             source={require("../../assets/Catassets/filter.png")}
           />
-
         </View>
-
         <View style={styles.recommendedContainer}>{renderRecommendedItems()}</View>
-
       </View>
-
-
-
       <ScrollView>
-        {catProfiles.map((catProfile) => renderPetCard(catProfile))}
+        {searchText.trim() !== ''
+          ? filteredCatProfiles.map((catProfile) => renderPetCard(catProfile))
+          : catProfiles.map((catProfile) => renderPetCard(catProfile))}
       </ScrollView>
-
       <View style={styles.bottomMenu}>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}
-        >
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
           <HomeIcon name="home" size={24} color="#47C1FF" />
           <Text style={{ ...styles.menuText, color: '#47C1FF' }}>Home</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('DoctorScreen')}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('AppointmentScreen')}>
           <DoctorIcon name="stethoscope" size={24} color="#9F9F9F" />
           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Doctor</Text>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ChatScreen')}>
           <ChatIcon name="chatbox-ellipses-outline" size={24} color="#9F9F9F" />
           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Chat</Text>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProfileScreen')}>
           <ProfileIcon name="user" size={24} color="#9F9F9F" />
           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Profile</Text>
@@ -401,7 +391,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -410,14 +399,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-
   greeting: {
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
     color: '#212529',
     flex: 1,
     flexDirection: 'row',
-
   },
   handicon: {
     flex: 1,
@@ -441,30 +428,14 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
     right: 10,
-    top:5,
+    top: 5,
   },
-  // NotificationIcon: {
-  //   position: 'absolute',
-  //   top: height * 0.01, // Use a percentage of the screen height
-  //   right: width * 0.02, // Use a percentage of the screen width
-  //   height: height * 0.05, // Use a percentage of the screen height
-  //   width: width * 0.07, // Use a percentage of the screen width
-  // },
-
   hearticon: {
     width: 110,
     height: 15,
     position: "absolute",
     top: 79,
   },
-  // hearticon: {
-  //   width: width * 0.7, // Use a percentage of the screen width
-  //   height: 15,
-  //   position: "absolute",
-  //   top: height * 0.7, // Use a percentage of the screen height
-  // },
-
-
   subText: {
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
@@ -495,8 +466,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 13,
   },
-
-
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -507,37 +476,23 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
   },
-  // searchInputContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   borderColor: '#fff',
-  //   backgroundColor: '#fff',
-  //   width: width * 0.9, // Use a percentage of the screen width
-  //   borderWidth: 1,
-  //   borderRadius: 25,
-  //   height: 50,
-  // },
-
   searchInput: {
     flex: 1,
     marginLeft: 10,
     fontFamily: 'Poppins-Regular',
     color: '#212529',
   },
-
   searchContainer: {
     marginTop: 16,
   },
   imageContainer: {
     marginRight: 15,
   },
-
   thumbnailImage: {
     width: 90,
     height: 100,
     borderRadius: 5,
   },
-
   petCardContainer: {
     marginTop: 16,
   },
@@ -551,45 +506,37 @@ const styles = StyleSheet.create({
     margin: 12,
     marginLeft: 0,
     marginBottom: 2,
-    width: '100%'
+    width: '100%',
   },
-
   petName: {
     fontSize: 16,
     marginBottom: 1,
     color: '#212529',
-    fontFamily: 'Poppins-SemiBold'
+    fontFamily: 'Poppins-SemiBold',
   },
-
   breed: {
     fontSize: 14,
     color: '#7E7E7E',
     marginBottom: 1,
-    fontFamily: 'Poppins-Medium'
+    fontFamily: 'Poppins-Medium',
   },
-
   available: {
     fontSize: 14,
     color: '#7E7E7E',
     marginBottom: 1,
-    fontFamily: 'Poppins-SemiBold'
+    fontFamily: 'Poppins-SemiBold',
   },
-
   bottomMenu: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     marginTop: 10,
-    // padding: 5,
   },
-  menuItem: {
 
+  menuItem: {
     alignItems: 'center',
-    borderColor: '#9F9F9F',
-    borderWidth: 1,
-    borderRadius: 25,
-    height: 50,
+
   },
   menuText: {
     // margin: 5,

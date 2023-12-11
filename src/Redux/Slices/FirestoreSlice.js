@@ -8,10 +8,7 @@ const initialState = {
 const firestoreSlice = createSlice({
   name: 'firestore',
   initialState,
-  reducers: {
-
-
-    
+  reducers: {   
 
     saveCatProfileToFirestore: (state, action) => {
       const catProfileData = action.payload;
