@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   title2:{
     fontFamily: 'Poppins-SemiBold',
     color: '#212529',
-    fontSize: 15,
+    fontSize: 16,
     paddingTop: 5,
     alignItems: 'center',
     position: 'absolute',

@@ -2,11 +2,8 @@
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
-
 
 const Splashscreen = () => {
 
@@ -26,7 +23,7 @@ const Splashscreen = () => {
     navigation.navigate('Signup');
   };
   const handleDoctorSelection = (role) => {
-    navigation.navigate('DoctorBasicInfo');
+    navigation.navigate('DoctorSignupScreen');
   };
 
   return (
