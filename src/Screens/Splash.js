@@ -6,7 +6,8 @@ import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 
 
-const SplashScreen = () => {
+const Splashscreen = () => {
+
 
     const navigation = useNavigation();
 
@@ -17,49 +18,65 @@ const SplashScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Animatable.View
-                animation="zoomIn"
-                duration={1500}
-                style={styles.logoContainer}>
-                {/* <Animatable.Image
-                    animation="pulse"
-                    easing="ease-out"
-                    iterationCount="infinite"
-                    // source={require('./path-to-your-cat-image.png')} // Replace with your cat image
-                    style={styles.logo}
-                /> */}
-            </Animatable.View>
+            <View style={styles.piccontainers}>
+
+                <View style={styles.yellowcircle1}>
+
+                </View>
+                <View style={styles.orangecircle2}>
+
+                </View>
+                <View style={styles.bluecircle3}>
+
+                </View>
+                <Image
+                    style={styles.catcircle1}
+                    resizeMode="cover"
+                    source={require('../../assets/Catassets/catcircle.png')}
+                />
+                <Image
+                    style={styles.doctorcircle2}
+                    resizeMode="cover"
+                    source={require('../../assets/Catassets/doctor.png')}
+                />
+                <Image
+                    style={styles.catcircle3}
+                    resizeMode="contain"
+                    source={require('../../assets/Catassets/pinkcat.png')}
+                />
+                <View style={styles.redcircle6}>
+
+                </View>
+            </View>
+
+
             <Animatable.Text
                 animation="fadeInDown"
                 duration={1200}
                 style={styles.title}>
-                Cat Breed System
+                Cat Connect
+
             </Animatable.Text>
             <Animatable.Text
                 animation="fadeInUp"
                 duration={1200}
                 delay={500}
                 style={styles.subtitle}>
-                Find Your Perfect Match & Book Doctor Appointments
+                Discover, Connect, Consult—All Things Cats in One Place!
             </Animatable.Text>
+          
             <Animatable.View
                 animation="fadeIn"
                 duration={1500}
-                delay={1000}
-                style={styles.pawPrintsContainer}>
-                {/* <Image
-                    // source={require('./path-to-paw-image.png')} // Replace with your paw image
-                    style={styles.pawPrint}
-                />
-                <Image
-                    // source={require('./path-to-paw-image.png')} // Replace with your paw image
-                    style={styles.pawPrint}
-                /> */}
+                delay={2000}  // Delay of 2000 milliseconds (2 seconds)
+                style={styles.buttonContainer}
+            >
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Get Started</Text>
+                </TouchableOpacity>
             </Animatable.View>
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Get Started</Text>
-            </TouchableOpacity>
+
         </View>
     );
 };
@@ -67,11 +84,66 @@ const SplashScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#47C1FF',
+        backgroundColor: '#fff',
+
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
     },
+    piccontainers: {
+        backgroundColor: '#fff',
+        height: '50%',
+    },
+    yellowcircle1: {
+        backgroundColor: '#cee016',
+        borderRadius: 100,
+        padding: 100,
+        position: 'absolute',
+        left: '25%',
+        top: '-40%',
+    },
+    orangecircle2: {
+        backgroundColor: '#f58a2c',
+        borderRadius: 100,
+        padding: 26,
+        position: 'absolute',
+        right: '48%',
+        top: '40%',
+    },
+    bluecircle3: {
+        backgroundColor: '#47C1FF',
+        borderRadius: 100,
+        padding: 16,
+        position: 'absolute',
+        right: '15%',
+        top: '95%',
+    },
+    catcircle1: {
+        position: 'absolute',
+        right: '10%',
+        top: '-10%',
+
+    },
+    doctorcircle2: {
+        position: 'absolute',
+        left: '2%',
+        top: '45%',
+
+    },
+    catcircle3: {
+        position: 'absolute',
+        top: '70%',
+        right: '25%',
+    },
+    redcircle6: {
+        borderRadius: 100,
+        padding: 12,
+        position: 'absolute',
+        left: '35%',
+        top: '35%',
+        backgroundColor: '#f7645e',
+    },
+
     logoContainer: {
         alignItems: 'center',
     },
@@ -81,40 +153,42 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: 'white',
-        marginTop: 20,
+        fontSize: 40,
+        color: '#212529',
+        marginTop: 30,
+        fontFamily: 'Poppins-ExtraBold',
+        paddingTop: 0,
+        paddingBottom: 0,
+
     },
     subtitle: {
         fontSize: 18,
-        color: 'white',
+        color: '#7E7E7E',
         textAlign: 'center',
-        marginTop: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        fontFamily: 'Poppins-SemiBold',
     },
-    pawPrintsContainer: {
-        flexDirection: 'row',
-        marginTop: 20,
-    },
-    pawPrint: {
-        width: 30,
-        height: 30,
-        marginHorizontal: 5,
+
+    buttonContainer: {
+        alignItems: 'center',
     },
 
     button: {
-        backgroundColor: 'pink', // Using the same color as SignUp button
-        padding: 12,
-        borderRadius: 25,
-        marginTop: 15,
+        backgroundColor: '#47C1FF', // Using the same color as SignUp button
+         padding: 10,
+        paddingLeft:20,
+        paddingRight:20,
+        borderRadius: 16,
+        marginTop: 25,
         width: '50%',
     },
     buttonText: {
-        fontSize: 18,
+        fontSize: 22,
         color: '#ffff',
         textAlign: 'center',
         fontFamily: 'Poppins-SemiBold',
     },
 });
 
-export default SplashScreen;
+export default Splashscreen;

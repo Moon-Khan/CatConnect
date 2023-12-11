@@ -8,37 +8,35 @@ import store from './Redux/Stores/store';
 import SignupScreen from './components/auth/SignupScreen';
 import LoginScreen from './components/auth/LoginScreen';
 import HomeScreen from '../src/Screens/HomeScreen';
+import CatScreen from '../src/Screens/CatScreen';
 import RoleSelectionScreen from './Screens/RoleSelectionScreen';
 import CatBasicInfoScreen from './components/CatProfile/CatBasicInfoScreen';
 import PhysicalAndHealthInfo from './components/CatProfile/PhysicalAndHealthInfoScreeen';
 import PersonalityAndAvailabilityInfo from './components/CatProfile/PersonalityAndAvailabilityInfoScreen'
 import CatMediaUploadScreen from './components/CatProfile/MediaUploadScreen';
-import DoctorBasicInfoScreen from './components/DoctorProfile/DoctorBasicInfoScreen';
-import DoctorHome from './components/DoctorProfile/DoctorHome';
-import Pending from './components/DoctorProfile/Pending';
 import Splashscreen from './Screens/Splash';
-import doctorSignup from './components/DoctorProfile/DoctorInfo';
+import ProfileScreen from './Screens/ProfileScreen';
+
 
 const Stack = createStackNavigator();
 
 const App = () => (
   <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="doctorSignup">
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Splashscreen">
+
         <Stack.Screen name="Splashscreen" component={Splashscreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="doctorSignup" component={doctorSignup} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="CatScreen" component={CatScreen} />
         <Stack.Screen name="RoleSelection" component={RoleSelectionScreen} />
         <Stack.Screen name="CatBasicInfo" component={CatBasicInfoScreen} />
         <Stack.Screen name="PhysicalAndHealthInfo" component={PhysicalAndHealthInfo} />
         <Stack.Screen name="PersonalityAndAvailabilityInfo" component={PersonalityAndAvailabilityInfo} />
-        <Stack.Screen name="CatMediaUpload" component={CatMediaUploadScreen} />
-        <Stack.Screen name="DoctorBasicInfo" component={DoctorBasicInfoScreen} />
-        <Stack.Screen name="DoctorHome" component={DoctorHome} />
-        <Stack.Screen name="Pending" component={Pending} />
-
+        <Stack.Screen name="CatMediaUpload" component={CatMediaUploadScreen} /> 
 
       </Stack.Navigator>
     </NavigationContainer>

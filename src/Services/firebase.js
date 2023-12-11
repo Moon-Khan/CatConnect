@@ -6,7 +6,6 @@ class FirebaseService {
   static async addCatProfile(catProfileData, collection) {
     try {
 
-
       // Make sure catProfileData is an object
       if (typeof catProfileData === 'object' && catProfileData !== null) {
 

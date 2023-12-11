@@ -33,13 +33,14 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <TextInput
-        style={[styles.input, styles.underline]} 
+        style={[styles.input, styles.inputbox]} 
+
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
         keyboardType="email-address"
       />
       <TextInput
-        style={[styles.input, styles.underline]} 
+        style={[styles.input, styles.inputbox]} 
         placeholder="Password"
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
@@ -66,18 +67,21 @@ const styles = StyleSheet.create({
     color: '#47C1FF',
   },
   input: {
-    height: 40,
     marginBottom: 16,
     paddingHorizontal: 8,
+    paddingLeft:12,
     alignSelf: 'stretch',
-    color: '#000',
+    color: '#7E7E7E',
     fontFamily: 'Poppins-SemiBold',
-
+    fontSize: 15, 
   },
-  underline: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#47C1FF',
-    width: '80%',
+  inputbox: {
+    borderColor: '#D9D9D9',
+    borderWidth: 1,
+    padding: 10,
+    height: 50, 
+    borderRadius: 8,
+    width: '90%',
     alignSelf: 'center',
     minHeight: 1,
     marginTop: 6,

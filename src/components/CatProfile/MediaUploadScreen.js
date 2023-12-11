@@ -1,16 +1,28 @@
 // ./src/CatProfile/CatMediaUploadScreen.js
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMedia } from '../../Redux/Slices/CatProfile/CatProfileSlice';
 import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const CatMediaUploadScreen = () => {
     const [image, setImage] = useState([]);
     const dispatch = useDispatch();
     const mediaList = useSelector((state) => state.catProfile.mediaUpload.mediaList);
+    const navigation = useNavigation();
+    const [isBtnPressed, setIsBtnPressed] = useState(false);
+
+    const onPressIn = () => {
+        setIsBtnPressed(true);
+    };
+
+    const onPressOut = () => {
+        setIsBtnPressed(false);
+    };
+
 
     const photoCamera = () => {
         ImageCropPicker.openCamera({
@@ -51,6 +63,7 @@ const CatMediaUploadScreen = () => {
                         'catProfiles'
                     )
                 );
+                navigation.navigate('Home');
             }
         } catch (err) {
             console.log(err);
@@ -60,15 +73,6 @@ const CatMediaUploadScreen = () => {
     return (
         <View style={{ ...styles.container, backgroundColor: 'white' }}>
             <Text style={styles.title}>Cat Media Upload</Text>
-
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={photoCamera}>
-                    <Text style={styles.buttonText}>Upload Photo from camera</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={photoLib}>
-                    <Text style={styles.buttonText}>Upload Photo from drive</Text>
-                </TouchableOpacity>
-            </View>
 
             <View style={{ height: 350, width: '100%' }}>
                 {image.length > 0 && (
@@ -81,8 +85,41 @@ const CatMediaUploadScreen = () => {
                 )}
             </View>
 
+            {/* <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={photoCamera}>
+                    <Text style={styles.buttonText}>Upload Photo from camera</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={photoLib}>
+                    <Text style={styles.buttonText}>Upload Photo from drive</Text>
+                </TouchableOpacity>
+            </View> */}
+
+            <View style={styles.buttonContainer}>
+                <TouchableHighlight
+                    style={[styles.button, isBtnPressed && styles.buttonPressed]}
+                    onPress={photoCamera}
+                    onPressIn={onPressIn}
+                    onPressOut={onPressOut}
+                    underlayColor="#47C1FF"
+                    color='#fff'
+
+                >
+                    <Text style={[styles.buttonText, isBtnPressed && { color: '#fff' }]}>Upload Photo from camera</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={[styles.button, isBtnPressed && styles.buttonPressed]}
+                    onPress={photoLib}
+                    onPressIn={onPressIn}
+                    onPressOut={onPressOut}
+                    underlayColor="#47C1FF"
+                    color='#fff'
+                >
+                    <Text style={[styles.buttonText, isBtnPressed && { color: '#fff' }]}>Upload Photo from drive</Text>
+                </TouchableHighlight>
+            </View>
+
             <TouchableOpacity style={styles.profileButton} onPress={handleSaveToFirestore}>
-                <Text style={styles.buttonText}>Profile Created</Text>
+                <Text style={styles.profileButtonText}>Profile Created</Text>
             </TouchableOpacity>
         </View>
     );
@@ -92,9 +129,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     title: {
         fontSize: 24,
+        marginTop:15,
+
         marginBottom: 16,
         textAlign: 'left',
         color: '#212529',
@@ -103,18 +144,50 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginBottom: 16,
+        marginTop: 40,
     },
+    // button: {
+    //     backgroundColor: '#fff',
+    //     padding: 10,
+    //     borderRadius: 25,
+    //     flex: 1,
+    //     marginHorizontal: 10,
+    //     borderColor: '#47C1FF',
+    //     borderWidth: 2,
+    // },
+    // buttonText: {
+    //     fontSize: 14,
+    //     color: '#47C1FF',
+    //     textAlign: 'center',
+    //     fontFamily: 'Poppins-SemiBold',
+    // },
+
     button: {
-        backgroundColor: '#47C1FF',
+        backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 25,
         flex: 1,
         marginHorizontal: 10,
+        borderColor: '#47C1FF',
+        borderWidth: 2,
+        ...Platform.select({
+            android: {
+                elevation: 1,
+            },
+        }),
+    },
+    buttonPressed: {
+        ...Platform.select({
+            android: {
+                elevation: 2, // Adjust the elevation when pressed
+            },
+        }),
     },
     buttonText: {
-        color: 'white',
+        fontSize: 14,
+        color: '#47C1FF',
         textAlign: 'center',
+        fontFamily: 'Poppins-SemiBold',
     },
     image: {
         width: '100%',
@@ -123,11 +196,21 @@ const styles = StyleSheet.create({
     },
     profileButton: {
         backgroundColor: '#47C1FF',
+        fontFamily: 'Poppins-SemiBold',
         padding: 15,
-        borderRadius: 8,
+        borderRadius: 15,
         alignItems: 'center',
         marginTop: 20,
+        width: '50%',
+        alignContent: 'center',
+        position:'relative',
+        left: '25%',
     },
+    profileButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontFamily: 'Poppins-SemiBold',
+    }
 });
 
 export default CatMediaUploadScreen;

@@ -142,35 +142,6 @@
 //     </View>
 //   );
 
-//   return (
-//     <View style={styles.container}>
-//       <Noti name="notifications-none" size={33} style={{ position: 'absolute', top: '1%', right: '1%' }} />
-
-//       <View style={styles.header}>
-//         <Text style={styles.greeting}>Hello User </Text>
-//       </View>
-//       <View style={styles.recommendedContainer}>
-//         {renderRecommendedItems()}
-//       </View>
-//       <View style={styles.searchContainer}>
-//         <View style={styles.searchInputContainer}>
-//           <Search name="search" size={25} style={{ marginLeft: 10 }} color="#9F9F9F" />
-//           <TextInput
-//             placeholder="Search..."
-//             placeholderTextColor="#9F9F9F"
-//             onChangeText={handleSearch}
-//             value={searchText}
-//             style={styles.searchInput}
-//           />
-//         </View>
-//       </View>
-
-//       <ScrollView style={styles.petCardContainer}>
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//       </ScrollView>
 
 //       <View style={styles.bottomMenu}>
 //         <TouchableOpacity style={styles.menuItem}>
@@ -194,27 +165,55 @@
 //   );
 // };
 
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import Home from 'react-native-vector-icons/Feather';
-import Doctor from 'react-native-vector-icons/FontAwesome';
-import Chat from 'react-native-vector-icons/Ionicons';
-import Profile from 'react-native-vector-icons/Feather';
-import Noti from 'react-native-vector-icons/MaterialIcons';
-import Search from 'react-native-vector-icons/MaterialIcons';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import CatScreen from './CatScreen'; // Import your CatScreen component
+import HomeIcon from 'react-native-vector-icons/Feather';
+import DoctorIcon from 'react-native-vector-icons/FontAwesome';
+import ChatIcon from 'react-native-vector-icons/Ionicons';
+import ProfileIcon from 'react-native-vector-icons/Feather';
+import NotificationIcon from 'react-native-vector-icons/MaterialIcons';
+import SearchIcon from 'react-native-vector-icons/MaterialIcons';
 import firestore from '@react-native-firebase/firestore';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 
-const HomeScreen = () => {
+const Stack = createStackNavigator();
+
+const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [catProfiles, setCatProfiles] = useState([]);
+  const [userData, setUserData] = useState({}); // Initialize with an empty object
+  // const { width, height } = Dimensions.get('window');
+
+  const user = auth().currentUser;
 
   useEffect(() => {
+
+    const fetchUserData = async () => {
+      try {
+        const userDoc = await firestore().collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+          setUserData(userDoc.data());
+        } else {
+          console.log('User document does not exist in Firestore.');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
+
+  useEffect(() => {
+
+
     const fetchAllCatProfiles = async () => {
       try {
-        // const user = auth().currentUser;
-
 
         const usersSnapshot = await firestore()
           .collection('users')
@@ -243,13 +242,18 @@ const HomeScreen = () => {
   }, []);
 
 
-
   const handleSearch = (text) => {
     setSearchText(text);
   };
 
+  const handleCatProfilePress = (catProfile) => {
+    navigation.navigate('CatScreen', { catProfile });
+  };
+
   const renderRecommendedItems = () => {
-    const recommendedItems = ['Recommended', 'New', 'Persian', 'Colico', 'Himalayan', 'Black Contrast'];
+    const recommendedItems = ['New'];
+    const recommendedItems2 = ['Recommended', 'Persian', 'Colico', 'Himalayan', 'Black Contrast'];
+
 
     return (
       <ScrollView
@@ -262,13 +266,17 @@ const HomeScreen = () => {
             <Text style={{ ...styles.recommendedText, color: 'white' }}>{item}</Text>
           </View>
         ))}
+        {recommendedItems2.map((item, index) => (
+          <View key={index} style={styles.recommendedItem2}>
+            <Text style={{ ...styles.recommendedText, color: '#7E7E7E' }}>{item}</Text>
+          </View>
+        ))}
       </ScrollView>
     );
-
   };
 
   const renderPetCard = (catProfile) => {
-    console.log('renderPet card catProfile=', catProfile);
+
     if (!catProfile || !catProfile['1'] || !catProfile['4']) {
       return (
         <View style={styles.petCard}>
@@ -277,11 +285,12 @@ const HomeScreen = () => {
       );
     }
 
-    console.log('catProfile=', catProfile);
     const basicInfo = catProfile['1'].basicInfo || {};
+    const personalityAndAvailability = catProfile['3'].personalityAndAvailability || {};
 
     return (
-      <View key={basicInfo.catName} style={styles.petCard}>
+      <TouchableOpacity key={basicInfo.catName} style={styles.petCard} onPress={() => handleCatProfilePress(catProfile)}>
+
         <View style={styles.imageContainer}>
           {catProfile['4'].mediaUpload.mediaList && catProfile['4'].mediaUpload.mediaList.length > 0 ? (
             <Image
@@ -293,29 +302,49 @@ const HomeScreen = () => {
           )}
         </View>
         <View style={styles.cardContent}>
-          <Text style={styles.petName}>Cat Name: {basicInfo.catName}</Text>
-          <Text style={styles.description}>Breed: {basicInfo.breed}</Text>
-          <View style={styles.detailsContainer}>
-            <Text style={styles.age}>Age: {basicInfo.age}</Text>
-            {/* Add more details if needed */}
-          </View>
+          <Text style={styles.petName}>{basicInfo.catName}</Text>
+          <Text style={styles.breed}>{basicInfo.breed}</Text>
+          <Text style={styles.available}>{personalityAndAvailability.availabilityStatus}</Text>
+          <Image
+            style={styles.hearticon}
+            resizeMode="cover"
+            source={require("../../assets/Catassets/hearts.png")}
+          />
+
         </View>
-      </View>
+      </TouchableOpacity>
+
     );
   };
 
   return (
     <View style={styles.container}>
-      <Noti name="notifications-none" size={33} style={{ position: 'absolute', top: '1%', right: '1%' }} />
+      {/* <NotificationIcon name="notifications-none" size={33}
+        import availabilityStatusstyle={{ position: 'absolute', top: '1%', right: '1%' }} /> */}
+      <Image
+        style={styles.NotificationIcon}
+        resizeMode="cover"
+        source={require("../../assets/Catassets/notification.png")}
+      />
+
+      <View style={styles.header1}>
+        <Text style={styles.greeting}>Hello {userData.username || ''} </Text>
+        <Image
+          style={styles.handicon}
+          resizeMode="cover"
+          source={require("../../assets/Catassets/hand.png")}
+        />
+      </View>
 
       <View style={styles.header}>
-        <Text style={styles.greeting}>Hello User </Text>
+        <Text style={styles.greeting}>Select Best Breed For Your Cat </Text>
       </View>
-      <View style={styles.recommendedContainer}>{renderRecommendedItems()}</View>
+
 
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
-          <Search name="search" size={25} style={{ marginLeft: 10 }} color="#9F9F9F" />
+          <SearchIcon name="search" size={25} style={{ marginLeft: 10 }} color="#9F9F9F" />
+
           <TextInput
             placeholder="Search..."
             placeholderTextColor="#9F9F9F"
@@ -323,29 +352,43 @@ const HomeScreen = () => {
             value={searchText}
             style={styles.searchInput}
           />
+          <Image
+            style={styles.filtericon}
+            resizeMode="cover"
+            source={require("../../assets/Catassets/filter.png")}
+          />
+
         </View>
+
+        <View style={styles.recommendedContainer}>{renderRecommendedItems()}</View>
+
       </View>
 
 
-      <ScrollView >
+
+      <ScrollView>
         {catProfiles.map((catProfile) => renderPetCard(catProfile))}
       </ScrollView>
 
       <View style={styles.bottomMenu}>
-        <TouchableOpacity style={styles.menuItem}>
-          <Home name="home" size={24} color="#47C1FF" />
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}
+        >
+          <HomeIcon name="home" size={24} color="#47C1FF" />
           <Text style={{ ...styles.menuText, color: '#47C1FF' }}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Doctor name="stethoscope" size={24} color="#9F9F9F" />
+
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('DoctorScreen')}>
+          <DoctorIcon name="stethoscope" size={24} color="#9F9F9F" />
           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Doctor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Chat name="chatbox-ellipses-outline" size={24} color="#9F9F9F" />
+
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ChatScreen')}>
+          <ChatIcon name="chatbox-ellipses-outline" size={24} color="#9F9F9F" />
           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
-          <Profile name="user" size={24} color="#9F9F9F" />
+
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProfileScreen')}>
+          <ProfileIcon name="user" size={24} color="#9F9F9F" />
           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Profile</Text>
         </TouchableOpacity>
       </View>
@@ -356,7 +399,6 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f8f8',
     padding: 20,
   },
 
@@ -364,12 +406,65 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  header1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
   greeting: {
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
     color: '#212529',
+    flex: 1,
+    flexDirection: 'row',
 
   },
+  handicon: {
+    flex: 1,
+    flexDirection: 'row',
+    width: 30,
+    height: 30,
+    position: "absolute",
+    left: 125,
+  },
+  filtericon: {
+    width: 25,
+    height: 25,
+    position: "absolute",
+    right: 10,
+    margin: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  NotificationIcon: {
+    width: 30,
+    height: 30,
+    position: "absolute",
+    right: 10,
+    top:5,
+  },
+  // NotificationIcon: {
+  //   position: 'absolute',
+  //   top: height * 0.01, // Use a percentage of the screen height
+  //   right: width * 0.02, // Use a percentage of the screen width
+  //   height: height * 0.05, // Use a percentage of the screen height
+  //   width: width * 0.07, // Use a percentage of the screen width
+  // },
+
+  hearticon: {
+    width: 110,
+    height: 15,
+    position: "absolute",
+    top: 79,
+  },
+  // hearticon: {
+  //   width: width * 0.7, // Use a percentage of the screen width
+  //   height: 15,
+  //   position: "absolute",
+  //   top: height * 0.7, // Use a percentage of the screen height
+  // },
+
+
   subText: {
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
@@ -382,20 +477,46 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
   recommendedItem: {
-    backgroundColor: '#3498db',
-    padding: 8,
-    borderRadius: 6,
+    backgroundColor: '#47C1FF',
+    paddingTop: 10,
+    paddingLeft: 17,
+    paddingRight: 17,
     marginRight: 10,
+    borderRadius: 20,
   },
+  recommendedItem2: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 15,
+    marginRight: 10,
+    borderRadius: 20,
+  },
+  recommendedText: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 13,
+  },
+
 
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#9F9F9F',
+    borderColor: '#fff',
+    backgroundColor: '#fff',
+    width: '100%',
     borderWidth: 1,
     borderRadius: 25,
     height: 50,
   },
+  // searchInputContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   borderColor: '#fff',
+  //   backgroundColor: '#fff',
+  //   width: width * 0.9, // Use a percentage of the screen width
+  //   borderWidth: 1,
+  //   borderRadius: 25,
+  //   height: 50,
+  // },
 
   searchInput: {
     flex: 1,
@@ -412,8 +533,8 @@ const styles = StyleSheet.create({
   },
 
   thumbnailImage: {
-    width: 70,
-    height: 80,
+    width: 90,
+    height: 100,
     borderRadius: 5,
   },
 
@@ -423,28 +544,35 @@ const styles = StyleSheet.create({
   petCard: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'lightgrey',
-    padding: 16,
+    backgroundColor: '#fff',
+    padding: 15,
+    paddingLeft: 20,
     borderRadius: 8,
     margin: 12,
+    marginLeft: 0,
     marginBottom: 2,
+    width: '100%'
   },
+
   petName: {
     fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: 1,
+    color: '#212529',
+    fontFamily: 'Poppins-SemiBold'
   },
-  description: {
+
+  breed: {
     fontSize: 14,
-    color: '#777',
-    marginBottom: 8,
+    color: '#7E7E7E',
+    marginBottom: 1,
+    fontFamily: 'Poppins-Medium'
   },
-  detailsContainer: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  age: {
-    marginRight: 8,
+
+  available: {
+    fontSize: 14,
+    color: '#7E7E7E',
+    marginBottom: 1,
+    fontFamily: 'Poppins-SemiBold'
   },
 
   bottomMenu: {
@@ -453,13 +581,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     marginTop: 10,
-    padding: 5,  
+    // padding: 5,
   },
   menuItem: {
+
     alignItems: 'center',
+    borderColor: '#9F9F9F',
+    borderWidth: 1,
+    borderRadius: 25,
+    height: 50,
   },
   menuText: {
-    margin: 5,
+    // margin: 5,
     fontSize: 12,
   },
 });

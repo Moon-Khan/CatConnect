@@ -6,9 +6,10 @@ import DocumentPicker from 'react-native-document-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePhysicalHealth } from '../../Redux/Slices/CatProfile/CatProfileSlice';
 import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
+import { useNavigation } from '@react-navigation/native';
 
 
-const PhysicalAndHealthScreen = ({ navigation }) => {
+const PhysicalAndHealthScreen = () => {
 
 
     const color = useSelector((state) => state.catProfile.physicalHealth.color);
@@ -17,6 +18,8 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
     const coatLength = useSelector((state) => state.catProfile.physicalHealth.coatLength);
     const vaccinationStatus = useSelector((state) => state.catProfile.physicalHealth.vaccinationStatus);
     const medicalCertificate = useSelector((state) => state.catProfile.physicalHealth.medicalCertificate);
+    const navigation = useNavigation();
+
 
     //redux code
     const dispatch = useDispatch();
@@ -46,23 +49,23 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
         dispatch(updatePhysicalHealth({ medicalCertificate: text.uri }));
     };
 
-    const handleAttachment = async () => {
-        try {
-            const result = await DocumentPicker.pick({
-                type: [DocumentPicker.types.pdf],
-            });
+    // const handleAttachment = async () => {
+    //     try {
+    //         const result = await DocumentPicker.pick({
+    //             type: [DocumentPicker.types.pdf],
+    //         });
 
-            // setMedicalCertificate(result);
-            handleMedicalCertificateChange(result);
+    //         // setMedicalCertificate(result);
+    //         handleMedicalCertificateChange(result);
 
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                // User cancelled the picker
-            } else {
-                console.error('Error picking document:', err);
-            }
-        }
-    };
+    //     } catch (err) {
+    //         if (DocumentPicker.isCancel(err)) {
+    //             // User cancelled the picker
+    //         } else {
+    //             console.error('Error picking document:', err);
+    //         }
+    //     }
+    // };
 
     const handleNextPage = () => {
         try {
@@ -91,7 +94,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                 <Text fontFamily='Poppins-Regular'>Cat Color</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Cat Color"
+                    placeholder="e.g. White"
                     value={color}
                     onChangeText={handleColorChange}
                 />
@@ -101,7 +104,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                 <Text fontFamily='Poppins-Regular'>Cat Pattern</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Cat Pattern"
+                    placeholder="e.g. tabby/solid"
                     value={pattern}
                     onChangeText={handlePatternChange}
                 />
@@ -111,7 +114,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                 <Text fontFamily='Poppins-Regular'>Eye Color</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Eye Color"
+                    placeholder="e.g. brown"
                     value={eyeColor}
                     onChangeText={handleEyeColorChange}
                 />
@@ -121,7 +124,7 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
                 <Text fontFamily='Poppins-Regular'>Coat Length</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Coat Length"
+                    placeholder="e.g. short/medium"
                     value={coatLength}
                     onChangeText={handleCoatLengthChange}
                 />
@@ -130,25 +133,27 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
             <Text style={styles.sectionTitle}>Medical Information</Text>
 
             <View style={styles.inputContainer}>
-                <Text fontFamily='Poppins-Regular'>Vaccination Status</Text>
-                <RadioButton.Group
-                    onValueChange={(value) => handleVaccinationStatusChange(value)}
-                    value={vaccinationStatus}
+                <Text fontFamily='Poppins-Regular'>Vaccination Status</Text>    
 
-                >
-                    <View style={styles.radioButtonContainer}>
-                        <RadioButton.Item
-                            label="Vaccinated"
-                            value="Vaccinated"
-                            color="#47C1FF"
-                        />
-                        <RadioButton.Item
-                            label="Not Vaccinated"
-                            value="Not Vaccinated"
-                            color="#47C1FF"
-                        />
-                    </View>
-                </RadioButton.Group>
+                <View style={styles.radioButtonContainer}>
+                    <RadioButton
+                        value="Vaccinated"
+                        status={vaccinationStatus === 'Vaccinated' ? 'checked' : 'unchecked'}
+                        onPress={() => handleVaccinationStatusChange('Vaccinated')}
+                        color="#47C1FF" // Set color for checked sta
+
+                    />
+
+                    <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Vaccinated</Text>
+                    <RadioButton
+                        value="NotVaccinated"
+                        status={vaccinationStatus === 'NotVaccinated' ? 'checked' : 'unchecked'}
+                        onPress={() => handleVaccinationStatusChange('NotVaccinated')}
+                        color="#47C1FF" // Set color for checked sta
+
+                    />
+                    <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Not Vaccinated</Text>
+                </View>
             </View>
 
             {/* <View style={styles.inputContainer}>
@@ -179,10 +184,12 @@ const PhysicalAndHealthScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding: 20,
     },
     sectionTitle: {
         fontSize: 24,
+        marginTop: 15,
+
         marginBottom: 16,
         textAlign: 'left',
         color: '#212529',
@@ -190,6 +197,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
+        marginTop: 15,
         marginBottom: 16,
         textAlign: 'left',
         color: '#212529',
@@ -199,19 +207,25 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     input: {
-        height: 40,
-        borderColor: '#212529',
+        height: 50,
+        borderColor: '#D9D9D9',
+        color: '#7E7E7E',
         borderWidth: 1,
-        borderRadius: 12,
-        marginTop: 8,
-        padding: 8,
-        fontFamily: 'Poppins-Regular',
+        borderRadius: 8,
+        minHeight: 1,
+        marginTop: 6,
+        padding: 10,
+        fontFamily: 'Poppins-SemiBold',
 
     },
     radioButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+
+    },
+    radioButtonText: {
+        marginLeft: 0,
+        marginRight: 32,
     },
     attachmentButton: {
         backgroundColor: 'lightblue',
@@ -227,7 +241,8 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#47C1FF',
         padding: 15,
-        borderRadius: 15,
+        borderRadius: 25,
+
         alignItems: 'center',
         width: '70%',
         alignSelf: 'center',
