@@ -5,15 +5,16 @@ import { Button, RadioButton } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePersonalityAndAvailability } from '../../Redux/Slices/CatProfile/CatProfileSlice';
 import { saveCatProfileToFirestore } from '../../Redux/Slices/FirestoreSlice';
+import { useNavigation } from '@react-navigation/native';
 
-
-const PersonalityAvialabilityScreen = ({ navigation }) => {
+const PersonalityAvialabilityScreen = () => {
 
 
     const temperament = useSelector((state) => state.catProfile.personalityAndAvailability.temperament);
     const socialCompatibility = useSelector((state) => state.catProfile.personalityAndAvailability.socialCompatibility);
     const description = useSelector((state) => state.catProfile.personalityAndAvailability.description);
     const availabilityStatus = useSelector((state) => state.catProfile.personalityAndAvailability.availabilityStatus);
+    const navigation = useNavigation();
 
 
     //redux code
@@ -56,14 +57,14 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={{ ...styles.container, backgroundColor: 'white' }}>
             <Text style={styles.title}>Personality and Behavior</Text>
 
             <View style={styles.inputContainer}>
                 <Text>Temperament</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Temperament"
+                    placeholder="e.g. playful/shy"
                     value={temperament}
                     onChangeText={handleTemparamentChange}
                 />
@@ -73,7 +74,7 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
                 <Text>Social Compatibility</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Social Compatibility"
+                    placeholder="e.g. behaviour with other cats"
                     value={socialCompatibility}
                     onChangeText={handleSocialCompatibilityChange}
                 />
@@ -83,7 +84,7 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
                 <Text>Description</Text>
                 <TextInput
                     style={[styles.input, styles.descriptionInput]}
-                    placeholder="Description"
+                    placeholder="e.g. Description"
                     multiline
                     value={description}
                     onChangeText={handleDescriptionChange}
@@ -94,15 +95,26 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
 
             <View style={styles.inputContainer}>
                 <Text>Availability Status</Text>
-                <RadioButton.Group
-                    onValueChange={(value) => handleAvailabilityStatusChange(value)}
-                    value={availabilityStatus}
-                >
-                    <View style={styles.radioButtonContainer}>
-                        <RadioButton.Item label="Available" value="Available" />
-                        <RadioButton.Item label="Not Available" value="Not Available" />
-                    </View>
-                </RadioButton.Group>
+               
+                <View style={styles.radioButtonContainer}>
+                    <RadioButton
+                        value="Available"
+                        status={availabilityStatus === 'Available' ? 'checked' : 'unchecked'}
+                        onPress={() => handleAvailabilityStatusChange('Available')}
+                        color="#47C1FF" // Set color for checked sta
+
+                    />
+
+                    <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Available</Text>
+                    <RadioButton
+                        value="NotAvailable"
+                        status={availabilityStatus === 'NotAvailable' ? 'checked' : 'unchecked'}
+                        onPress={() => handleAvailabilityStatusChange('NotAvailable')}
+                        color="#47C1FF" // Set color for checked sta
+
+                    />
+                    <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Not Available</Text>
+                </View>
             </View>
 
             <TouchableOpacity style={styles.button} onPress={handleNextPage}>
@@ -116,33 +128,42 @@ const PersonalityAvialabilityScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding: 20,
     },
+
     title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 16,
-        marginBottom: 8,
-    },
-    inputContainer: {
+        fontSize: 24,
+        marginTop: 15,
         marginBottom: 16,
+        textAlign: 'left',
+        color: '#212529',
+        fontFamily: 'Poppins-SemiBold',
+    },
+
+    inputContainer: {
+        marginBottom: 10,
     },
     input: {
-        height: 40,
-        borderColor: 'gray',
+        height: 50,
+        borderColor: '#D9D9D9',
+        color: '#7E7E7E',
         borderWidth: 1,
-        marginTop: 8,
-        padding: 8,
+        borderRadius: 8,
+        minHeight: 1,
+        marginTop: 6,
+        padding: 10,
+        fontFamily: 'Poppins-SemiBold',
     },
     descriptionInput: {
         height: 80, // Adjust the height for a multiline description input
     },
     button: {
-        backgroundColor: 'blue',
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 16,
+        backgroundColor: '#47C1FF',
+        padding: 15,
+        borderRadius: 25,
         alignItems: 'center',
+        width: '70%',
+        alignSelf: 'center',
     },
     buttonText: {
         color: 'white',
@@ -150,6 +171,15 @@ const styles = StyleSheet.create({
     },
     saveButton: {
         marginTop: 16,
+    },
+    radioButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    radioButtonText: {
+        marginLeft: 0,
+        marginRight: 32,
     },
 });
 

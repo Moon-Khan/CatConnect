@@ -33,13 +33,13 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.inputbox]} 
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
         keyboardType="email-address"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.inputbox]} 
         placeholder="Password"
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
@@ -56,28 +56,49 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "#ffff",
+    padding: 16,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 16,
+    fontSize: 34,
+    marginBottom: 20,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#47C1FF',
   },
   input: {
-    width: '80%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
     marginBottom: 16,
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingLeft:12,
+    alignSelf: 'stretch',
+    color: '#7E7E7E',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15, 
+  },
+  inputbox: {
+    borderColor: '#D9D9D9',
+    borderWidth: 1,
+    padding: 10,
+    height: 50, 
+    borderRadius: 8,
+    width: '90%',
+    alignSelf: 'center',
+    minHeight: 1,
+    marginTop: 6,
   },
   button: {
-    backgroundColor: 'green', // Different color for login button
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#47C1FF', // Using the same color as SignUp button
+    padding: 12,
+    borderRadius: 25,
+    marginTop: 15,
+    width: '50%',
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    fontSize: 18,
+    color: '#ffff',
+    textAlign: 'center',
+    fontFamily: 'Poppins-Medium',
   },
 });
+
 
 export default LoginScreen;
