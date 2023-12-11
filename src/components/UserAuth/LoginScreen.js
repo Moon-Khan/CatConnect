@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { setLoading, setError, setUser } from '../../Redux/Slices/Auth/AuthSlice';
 import { useNavigation } from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -14,10 +15,18 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
+
       dispatch(setLoading(true));
       const userCredential = await auth().signInWithEmailAndPassword(email, password);
 
       dispatch(setUser(userCredential.user.uid));
+      
+      // const fcmToken = await messaging().getToken();
+      //  // Update user's FCM token in Firestore
+      //  await firestore().collection('users').doc(userCredential.user.uid).update({
+      //   fcmToken: fcmToken,
+      // });
+
       dispatch(setLoading(false));
       navigation.navigate('Home');
       console.log('Login successful!');

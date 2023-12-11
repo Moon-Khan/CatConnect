@@ -22,6 +22,7 @@ import CatMediaUploadScreen from './components/CatProfile/MediaUploadScreen';
 import Splashscreen from './Screens/Splash';
 import ProfileScreen from './Screens/ProfileScreen';
 import PendingAppointment from './Screens/DcotorAppointmentLists';  
+import NotificationsScreen from './Screens/NotificationScreen';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,7 @@ const App = () => (
         <Stack.Screen name="PersonalityAndAvailabilityInfo" component={PersonalityAndAvailabilityInfo} />
         <Stack.Screen name="CatMediaUpload" component={CatMediaUploadScreen} />
         <Stack.Screen name="PendingAppointments" component={PendingAppointment} />
+        <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,169 +1,4 @@
-// // ./src/HomeScreen.js
-// import React, { useEffect, useState } from 'react';
-// import { View, Text, StyleSheet, Image } from 'react-native';
-// import auth from '@react-native-firebase/auth';
-// import firestore from '@react-native-firebase/firestore';
-
-// const HomeScreen = () => {
-//   const [catProfileData, setCatProfileData] = useState(null);
-//   const user = auth().currentUser;
-
-//   useEffect(() => {
-//     const fetchCatProfileData = async () => {
-//       try {
-//         // Assuming 'catProfiles' is the collection name in Firestore
-//         const catProfileSnapshot = await firestore()
-//           .collection('users')
-//           .doc(user.uid) // Use user.uid instead of hardcoded userId
-//           .collection('catProfiles')
-//           .get();
-
-//         console.log('catprofile snapshot', catProfileSnapshot.docs);
-
-//         if (!catProfileSnapshot.empty) {
-//           // Assuming there is only one document per user in 'catProfiles'
-//           console.log('user login', user.uid);
-//           const catProfileData = catProfileSnapshot.docs[0].data();
-//           console.log('catProfile data', catProfileData);
-//           setCatProfileData(catProfileData);
-//         } else {
-//           // No cat profile data found
-//           setCatProfileData(null);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching cat profile data:', error);
-//       }
-//     };
-
-//     if (user) {
-//       fetchCatProfileData();
-//     }
-//   }, [user]); // Update the dependency to include user
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.title}>Home Screen</Text>
-//       {catProfileData !== null ? (
-//         <View>
-//           <Text>Cat Name: {catProfileData['1'].basicInfo.catName}</Text>
-//           <Text>Breed: {catProfileData['1'].basicInfo.breed}</Text>
-//           <Text>Age: {catProfileData['1'].basicInfo.age}</Text>
-//           {catProfileData['4'].mediaUpload.mediaList && catProfileData['4'].mediaUpload.mediaList.length > 0 ? (
-//             <Image
-//               style={styles.catImage}
-//               source={{ uri: catProfileData['4'].mediaUpload.mediaList[0].uri }}
-//             />
-//           ) : (
-//             <Text>No cat profile picture available</Text>
-//           )}
-//           {/* Display other cat profile data properties */}
-//         </View>
-//       ) : (
-//         <Text>Loading cat profile data...</Text>
-//       )}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   title: {
-//     fontSize: 24,
-//   },
-//   catImage: {
-//     width: 200,
-//     height: 200,
-//     marginTop: 10,
-//     resizeMode: 'cover',
-//   },
-// });
-
-// export default HomeScreen;
-
-
-// import React, { useState } from 'react';
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   StyleSheet,
-//   TouchableOpacity,
-//   ScrollView,
-// } from 'react-native';
-// import Home from 'react-native-vector-icons/Feather';
-// import Doctor from 'react-native-vector-icons/FontAwesome';
-// import Chat from 'react-native-vector-icons/Ionicons';
-// import Profile from 'react-native-vector-icons/Feather';
-// import Noti from 'react-native-vector-icons/MaterialIcons';
-// import Search from 'react-native-vector-icons/MaterialIcons';
-
-
-// const HomeScreen = () => {
-//   const [searchText, setSearchText] = useState('');
-
-//   const handleSearch = (text) => {
-//     setSearchText(text);
-//   };
-
-//   const renderRecommendedItems = () => {
-//     const recommendedItems = ['Recommended', 'New', 'Persian', 'Colico', 'Himalayan', 'Black Contrast'];
-
-//     return (
-//       <ScrollView
-//         horizontal
-//         showsHorizontalScrollIndicator={false}
-//         contentContainerStyle={styles.recommendedScrollContainer}
-//       >
-//         {recommendedItems.map((item, index) => (
-//           <View key={index} style={styles.recommendedItem}>
-//             <Text style={{ ...styles.recommendedText, color: 'white' }}>{item}</Text>
-//           </View>
-//         ))}
-//       </ScrollView>
-//     );
-//   };
-
-//   const renderPetCard = (petName, description, age, gender, rating) => (
-//     <View style={styles.petCard}>
-//       <Text style={styles.petName}>{petName}</Text>
-//       <Text style={styles.description}>{description}</Text>
-//       <View style={styles.detailsContainer}>
-//         <Text style={styles.age}>{age}</Text>
-//         <Text style={styles.gender}>{gender}</Text>
-//       </View>
-//       <View style={styles.ratingContainer}>
-//         {/* Display rating stars or any other UI element */}
-//         <Text style={styles.rating}>{rating}</Text>
-//       </View>
-//     </View>
-//   );
-
-
-//       <View style={styles.bottomMenu}>
-//         <TouchableOpacity style={styles.menuItem}>
-//           <Home name="home" size={24} color="#47C1FF" />
-//           <Text style={{ ...styles.menuText, color: '#47C1FF' }} >Home</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity style={styles.menuItem}>
-//           <Doctor name="stethoscope" size={24} color="#9F9F9F" />
-//           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Doctor</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity style={styles.menuItem}>
-//           <Chat name="chatbox-ellipses-outline" size={24} color="#9F9F9F" />
-//           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Chat</Text>
-//         </TouchableOpacity>
-//         <TouchableOpacity style={styles.menuItem}>
-//           <Profile name="user" size={24} color="#9F9F9F" />
-//           <Text style={{ ...styles.menuText, color: '#9F9F9F' }}>Profile</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
+// ./src/Screen/HomeScreen.js
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -176,7 +11,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import CatScreen from './CatDetailScreen';
 import HomeIcon from 'react-native-vector-icons/Feather';
 import DoctorIcon from 'react-native-vector-icons/FontAwesome';
 import ChatIcon from 'react-native-vector-icons/Ionicons';
@@ -192,6 +26,10 @@ const HomeScreen = ({ navigation }) => {
   const [catProfiles, setCatProfiles] = useState([]);
   const [userData, setUserData] = useState({});
   const [filteredCatProfiles, setFilteredCatProfiles] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+  const [haReadNotifications, setHasReadNotifications] = useState(false);
+
 
   const user = auth().currentUser;
 
@@ -241,6 +79,70 @@ const HomeScreen = ({ navigation }) => {
 
     fetchAllCatProfiles();
   }, []);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const unreadNotificationsSnapshot = await firestore()
+          .collection('Notifications')
+          .where('userId', '==', user.uid)
+          .where('status', '==', 'unread')
+          .get();
+
+        const readNotificationsSnapshot = await firestore()
+          .collection('Notifications')
+          .where('userId', '==', user.uid)
+          .where('status', '==', 'read')
+          .get();
+
+        const unreadNotificationsData = unreadNotificationsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const readNotificationsData = readNotificationsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setNotifications(unreadNotificationsData);
+        setHasUnreadNotifications(unreadNotificationsData.length > 0);
+        setHasReadNotifications(readNotificationsData.length > 0);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+  }, [user.uid]);
+
+  const handleNotificationPress = () => {
+    // Navigate to NotificationsScreen and mark all unread notifications as read
+    navigation.navigate('NotificationsScreen', { notifications});
+    // navigation.navigate('NotificationsScreen', { notifications, markAsRead: markAllAsRead });
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      // Mark all unread notifications as read
+      await Promise.all(
+        notifications.map(async (notification) => {
+          await firestore().collection('Notifications').doc(notification.id).update({
+            status: 'read',
+          });
+        })
+      );
+
+      // Update state to reflect that all notifications have been read
+      setNotifications([]);
+      setHasUnreadNotifications(false);
+      setHasReadNotifications(false);
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  };
+
+
 
   const handleSearch = (text) => {
     setSearchText(text);
@@ -325,11 +227,6 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.NotificationIcon}
-        resizeMode="cover"
-        source={require("../../assets/Catassets/notification.png")}
-      />
       <View style={styles.header1}>
         <Text style={styles.greeting}>Hello {userData.username || ''} </Text>
         <Image
@@ -359,6 +256,18 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.recommendedContainer}>{renderRecommendedItems()}</View>
       </View>
+
+
+      <TouchableOpacity style={styles.notifibutton} onPress={handleNotificationPress}>
+        <Image
+          style={styles.NotificationIcon}
+          resizeMode="cover"
+          source={require("../../assets/Catassets/notification.png")}
+        />
+        {hasUnreadNotifications && <View style={styles.unreadDot} />}
+        {haReadNotifications && <View style={styles.readDot} />}
+      </TouchableOpacity>
+
       <ScrollView>
         {searchText.trim() !== ''
           ? filteredCatProfiles.map((catProfile) => renderPetCard(catProfile))
@@ -466,6 +375,37 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 13,
   },
+  notifibutton: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 14,
+    paddingRight: 14,
+    borderRadius: 20,
+    marginTop: 10,
+    alignItems: 'center',
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  unreadDot: {
+    position: 'absolute',
+    top: 5,
+    right: 25,
+    backgroundColor: '#47C1FF',
+    width: 12,
+    height: 10,
+    borderRadius: 5,
+  },
+  readDot: {
+    position: 'absolute',
+    top: 5,
+    right: 25,
+    // backgroundColor: 'black',
+    width: 12,
+    height: 10,
+    borderRadius: 5,
+  },
+
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
