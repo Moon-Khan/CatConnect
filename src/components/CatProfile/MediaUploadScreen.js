@@ -15,7 +15,6 @@ const CatMediaUploadScreen = () => {
     const navigation = useNavigation();
     const [isBtnPressed, setIsBtnPressed] = useState(false);
 
-
     const onPressIn = () => {
         setIsBtnPressed(true);
     };
@@ -65,7 +64,6 @@ const CatMediaUploadScreen = () => {
                     )
                 );
                 navigation.navigate('Home');
-
             }
         } catch (err) {
             console.log(err);
@@ -120,7 +118,6 @@ const CatMediaUploadScreen = () => {
                 </TouchableHighlight>
             </View>
 
-
             <TouchableOpacity style={styles.profileButton} onPress={handleSaveToFirestore}>
                 <Text style={styles.profileButtonText}>Profile Created</Text>
             </TouchableOpacity>
@@ -138,6 +135,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         marginTop:15,
+
         marginBottom: 16,
         textAlign: 'left',
         color: '#212529',

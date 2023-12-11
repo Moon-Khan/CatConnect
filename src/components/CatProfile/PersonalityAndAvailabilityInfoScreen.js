@@ -115,6 +115,7 @@ const PersonalityAvialabilityScreen = () => {
                     />
                     <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Not Available</Text>
                 </View>
+
             </View>
 
             <TouchableOpacity style={styles.button} onPress={handleNextPage}>
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         marginTop: 15,
+
         marginBottom: 16,
         textAlign: 'left',
         color: '#212529',
@@ -153,6 +155,7 @@ const styles = StyleSheet.create({
         marginTop: 6,
         padding: 10,
         fontFamily: 'Poppins-SemiBold',
+
     },
     descriptionInput: {
         height: 80, // Adjust the height for a multiline description input
@@ -161,6 +164,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#47C1FF',
         padding: 15,
         borderRadius: 25,
+
         alignItems: 'center',
         width: '70%',
         alignSelf: 'center',

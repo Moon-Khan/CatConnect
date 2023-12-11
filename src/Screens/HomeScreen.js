@@ -142,35 +142,6 @@
 //     </View>
 //   );
 
-//   return (
-//     <View style={styles.container}>
-//       <Noti name="notifications-none" size={33} style={{ position: 'absolute', top: '1%', right: '1%' }} />
-
-//       <View style={styles.header}>
-//         <Text style={styles.greeting}>Hello User </Text>
-//       </View>
-//       <View style={styles.recommendedContainer}>
-//         {renderRecommendedItems()}
-//       </View>
-//       <View style={styles.searchContainer}>
-//         <View style={styles.searchInputContainer}>
-//           <Search name="search" size={25} style={{ marginLeft: 10 }} color="#9F9F9F" />
-//           <TextInput
-//             placeholder="Search..."
-//             placeholderTextColor="#9F9F9F"
-//             onChangeText={handleSearch}
-//             value={searchText}
-//             style={styles.searchInput}
-//           />
-//         </View>
-//       </View>
-
-//       <ScrollView style={styles.petCardContainer}>
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//         {renderPetCard('Mamoon Khan', 'Persian coated', '11 months old', 'Female', '4.5')}
-//       </ScrollView>
 
 //       <View style={styles.bottomMenu}>
 //         <TouchableOpacity style={styles.menuItem}>
@@ -243,6 +214,7 @@ const HomeScreen = ({ navigation }) => {
 
     const fetchAllCatProfiles = async () => {
       try {
+
         const usersSnapshot = await firestore()
           .collection('users')
           .get();
@@ -269,6 +241,7 @@ const HomeScreen = ({ navigation }) => {
     fetchAllCatProfiles();
   }, []);
 
+
   const handleSearch = (text) => {
     setSearchText(text);
   };
@@ -280,6 +253,7 @@ const HomeScreen = ({ navigation }) => {
   const renderRecommendedItems = () => {
     const recommendedItems = ['New'];
     const recommendedItems2 = ['Recommended', 'Persian', 'Colico', 'Himalayan', 'Black Contrast'];
+
 
     return (
       <ScrollView
@@ -302,6 +276,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const renderPetCard = (catProfile) => {
+
     if (!catProfile || !catProfile['1'] || !catProfile['4']) {
       return (
         <View style={styles.petCard}>
@@ -315,6 +290,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
       <TouchableOpacity key={basicInfo.catName} style={styles.petCard} onPress={() => handleCatProfilePress(catProfile)}>
+
         <View style={styles.imageContainer}>
           {catProfile['4'].mediaUpload.mediaList && catProfile['4'].mediaUpload.mediaList.length > 0 ? (
             <Image
@@ -337,6 +313,7 @@ const HomeScreen = ({ navigation }) => {
 
         </View>
       </TouchableOpacity>
+
     );
   };
 
@@ -367,6 +344,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
           <SearchIcon name="search" size={25} style={{ marginLeft: 10 }} color="#9F9F9F" />
+
           <TextInput
             placeholder="Search..."
             placeholderTextColor="#9F9F9F"
@@ -432,6 +410,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+
   greeting: {
     fontSize: 20,
     fontFamily: 'Poppins-SemiBold',
@@ -484,6 +463,7 @@ const styles = StyleSheet.create({
   //   position: "absolute",
   //   top: height * 0.7, // Use a percentage of the screen height
   // },
+
 
   subText: {
     fontSize: 20,
@@ -604,7 +584,12 @@ const styles = StyleSheet.create({
     // padding: 5,
   },
   menuItem: {
+
     alignItems: 'center',
+    borderColor: '#9F9F9F',
+    borderWidth: 1,
+    borderRadius: 25,
+    height: 50,
   },
   menuText: {
     // margin: 5,
@@ -613,3 +598,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+

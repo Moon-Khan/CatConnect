@@ -1,10 +1,11 @@
-
 // ./src/Screens/splash.js
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import { useNavigation } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 
 
 const Splashscreen = () => {
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
     color: '#47C1FF',
     textAlign: 'center',
     fontFamily: 'Poppins-SemiBold',
+
   },
 });
 

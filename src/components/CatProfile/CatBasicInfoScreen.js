@@ -68,6 +68,7 @@ const CatBasicInfoScreen = () => {
 
       </View>
 
+
       <View style={styles.inputContainer}>
         <Text style={fontFamily = 'Poppins-Regular'}>Cat's Name</Text>
         <TextInput
@@ -105,7 +106,6 @@ const CatBasicInfoScreen = () => {
             status={gender === 'Female' ? 'checked' : 'unchecked'}
             onPress={() => handleGenderChange('Female')}
             color="#47C1FF" // Set color for checked sta
-
           />
           <Text style={{ ...styles.radioButtonText, fontFamily: 'Poppins-Regular' }}>Female</Text>
         </View>
@@ -128,6 +128,7 @@ const CatBasicInfoScreen = () => {
       <TouchableOpacity style={styles.skipbutton} onPress={handleSkipPage}>
         <Text style={styles.skipbuttonText}>Skip</Text>
       </TouchableOpacity>
+
     </ScrollView>
   );
 };
@@ -135,6 +136,7 @@ const CatBasicInfoScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+
     justifyContent: 'center',
     backgroundColor: '#fff',
     fontSize:15,
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
 
+
   },
   inputContainer: {
     marginBottom: 10,
@@ -170,16 +173,19 @@ const styles = StyleSheet.create({
     marginTop: 6,
     padding: 10,
     fontFamily: 'Poppins-SemiBold',
+
   },
   button: {
     backgroundColor: '#47C1FF',
     padding: 15,
     borderRadius: 25,
+
     marginTop: 30,
     alignItems: 'center',
     width: '70%',
     alignSelf: 'center',
     marginBottom:20,
+
   },
   buttonText: {
     color: 'white',
@@ -214,6 +220,17 @@ const styles = StyleSheet.create({
   radioButtonText: {
     marginLeft: 0,
     marginRight: 32,
+  },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+  },
+  radioButtonText: {
+    marginLeft: 8,
+    marginRight:15,
+
+
   },
 });
 

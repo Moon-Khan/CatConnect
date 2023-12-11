@@ -17,14 +17,17 @@ import CatMediaUploadScreen from './components/CatProfile/MediaUploadScreen';
 import Splashscreen from './Screens/Splash';
 import ProfileScreen from './Screens/ProfileScreen';
 
+
 const Stack = createStackNavigator();
 
 const App = () => (
   <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Splashscreen">
+
         <Stack.Screen name="Splashscreen" component={Splashscreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="doctorSignup" component={doctorSignup} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
@@ -34,6 +37,7 @@ const App = () => (
         <Stack.Screen name="PhysicalAndHealthInfo" component={PhysicalAndHealthInfo} />
         <Stack.Screen name="PersonalityAndAvailabilityInfo" component={PersonalityAndAvailabilityInfo} />
         <Stack.Screen name="CatMediaUpload" component={CatMediaUploadScreen} /> 
+
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>

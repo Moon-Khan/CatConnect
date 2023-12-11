@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Splashscreen = () => {
 
+
     const navigation = useNavigation();
 
     const handleLogin = () => {
@@ -48,11 +49,13 @@ const Splashscreen = () => {
                 </View>
             </View>
 
+
             <Animatable.Text
                 animation="fadeInDown"
                 duration={1200}
                 style={styles.title}>
                 Cat Connect
+
             </Animatable.Text>
             <Animatable.Text
                 animation="fadeInUp"
@@ -73,6 +76,7 @@ const Splashscreen = () => {
                 </TouchableOpacity>
             </Animatable.View>
 
+
         </View>
     );
 };
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
@@ -138,6 +143,7 @@ const styles = StyleSheet.create({
         top: '35%',
         backgroundColor: '#f7645e',
     },
+
     logoContainer: {
         alignItems: 'center',
     },

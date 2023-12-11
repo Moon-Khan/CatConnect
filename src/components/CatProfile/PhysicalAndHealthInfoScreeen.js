@@ -133,8 +133,7 @@ const PhysicalAndHealthScreen = () => {
             <Text style={styles.sectionTitle}>Medical Information</Text>
 
             <View style={styles.inputContainer}>
-                <Text fontFamily='Poppins-Regular'>Vaccination Status</Text>
-    
+                <Text fontFamily='Poppins-Regular'>Vaccination Status</Text>    
 
                 <View style={styles.radioButtonContainer}>
                     <RadioButton
@@ -190,6 +189,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 24,
         marginTop: 15,
+
         marginBottom: 16,
         textAlign: 'left',
         color: '#212529',
@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
         marginTop: 6,
         padding: 10,
         fontFamily: 'Poppins-SemiBold',
+
     },
     radioButtonContainer: {
         flexDirection: 'row',
@@ -241,6 +242,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#47C1FF',
         padding: 15,
         borderRadius: 25,
+
         alignItems: 'center',
         width: '70%',
         alignSelf: 'center',
